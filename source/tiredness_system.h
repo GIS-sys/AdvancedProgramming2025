@@ -1,7 +1,6 @@
 #pragma once
 
-#include "world.h"
-#include "stamina.h"
+class World;
 
 class TirednessSystem
 {
@@ -9,19 +8,10 @@ class TirednessSystem
     const float tirednessInterval = 1.0f; // seconds
     const int tirednessAmount = 5;        // stamina points
 public:
-    void on_update(float dt) override
+    void on_update(float dt, World *world);
+
+    TirednessSystem &operator=(TirednessSystem &&other)
     {
-        accumulator += dt;
-        if (accumulator < tirednessInterval)
-            return;
-        accumulator -= tirednessInterval;
-        for (auto &obj : get_owner()->get_world()->get_objects())
-        {
-            auto stamina = obj->get_component<Stamina>();
-            if (stamina)
-            {
-                stamina->change(-tirednessAmount);
-            }
-        }
+        accumulator = other.accumulator;
     }
 };

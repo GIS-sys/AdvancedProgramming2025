@@ -5,7 +5,9 @@
 #include "archetypes/archetype.h"
 #include "tiredness_system.h"
 
-struct TirednessSystemArchetype : Archetype
+class World;
+
+struct TirednessSystemsArchetype : Archetype
 {
     std::vector<TirednessSystem> tirednesssystems;
 
@@ -15,7 +17,7 @@ struct TirednessSystemArchetype : Archetype
         tirednesssystems[iFrom] = std::move(tirednesssystems[iTo]);
     }
 
-    void extendMove(TirednessSystemArchetype &other)
+    void extendMove(TirednessSystemsArchetype &other)
     {
         ids.insert(ids.end(), std::make_move_iterator(other.ids.begin()), std::make_move_iterator(other.ids.end()));
         tirednesssystems.insert(tirednesssystems.end(), std::make_move_iterator(other.tirednesssystems.begin()), std::make_move_iterator(other.tirednesssystems.end()));
@@ -23,8 +25,5 @@ struct TirednessSystemArchetype : Archetype
         other.tirednesssystems.clear();
     }
 
-    void update(int i, float dt, World *world)
-    {
-        // TODO
-    }
+    void update(int i, float dt, World *world);
 };

@@ -7,7 +7,7 @@
 class IFoodFabrique
 {
 public:
-    virtual GameObjectPtr create_food(int2 position) = 0;
+    virtual void create_food(int2 position) = 0;
     virtual int weight() const = 0; // for weighted random selection
 };
 
@@ -42,7 +42,7 @@ public:
             rand_value -= fabrique->weight();
         }
     }
-    void on_update(float dt) override
+    void on_update(float dt)
     {
         timeSinceLastSpawn += dt;
         if (timeSinceLastSpawn >= spawnInterval)

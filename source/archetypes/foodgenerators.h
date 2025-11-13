@@ -5,6 +5,8 @@
 #include "archetypes/archetype.h"
 #include "food_generator.h"
 
+class World;
+
 struct FoodGeneratorsArchetype : Archetype
 {
     std::vector<FoodGenerator> foodgenerators;
@@ -23,8 +25,5 @@ struct FoodGeneratorsArchetype : Archetype
         other.foodgenerators.clear();
     }
 
-    void update(int i, float dt, World *world)
-    {
-        // TODO
-    }
+    void update(int i, float dt, World *world);
 };

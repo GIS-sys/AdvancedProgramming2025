@@ -2,6 +2,7 @@
 
 #include "restrictor.h"
 #include "stamina.h"
+#include "transform2d.h"
 #include <SDL3/SDL.h>
 #include <algorithm>
 
@@ -35,15 +36,10 @@ public:
         bind_camera_transform();
     }
 
-    void on_update(float dt) override
+    void on_update(float dt, Transform2D &transform, IRestrictor *restrictor, Stamina &stamina) override
     {
         const bool *keys = SDL_GetKeyboardState(nullptr);
-        auto transform = get_owner()->get_component<Transform2D>();
-        auto restrictor = get_owner()->get_component<IRestrictor>();
-        auto stamina = get_owner()->get_component<Stamina>();
-        if (!transform || !restrictor || !stamina)
-            return;
-        const float cellPerSecond = stamina->get_speed();
+        const float cellPerSecond = stamina.get_speed();
         int2 intDelta;
         bool moved = false;
         if (keys[SDL_SCANCODE_W])
@@ -74,11 +70,11 @@ public:
             return;
         }
         timeSinceLastMode = 0.f;
-        int2 newPos = int2((int)transform->x + intDelta.x, (int)transform->y + intDelta.y);
+        int2 newPos = int2((int)transform.x + intDelta.x, (int)transform.y + intDelta.y);
         if (restrictor->can_pass(newPos))
         {
-            transform->x += intDelta.x;
-            transform->y += intDelta.y;
+            transform.x += intDelta.x;
+            transform.y += intDelta.y;
             bind_camera_transform();
         }
     }

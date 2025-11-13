@@ -6,6 +6,7 @@
 #include "archetypes/cameras.h"
 #include "archetypes/enemies.h"
 #include "archetypes/foodgenerators.h"
+#include "archetypes/foods.h"
 #include "archetypes/heroes.h"
 #include "archetypes/starvationsystems.h"
 #include "archetypes/tiles.h"
@@ -21,16 +22,18 @@ public:
         filterDelete(currentHeroes, toDeleteHeroes);
         filterDelete(currentEnemies, toDeleteEnemies);
         filterDelete(currentFoodGenerators, toDeleteFoodGenerators);
+        filterDelete(currentFoods, toDeleteFoods);
         filterDelete(currentTirednessSystems, toDeleteTirednessSystems);
         filterDelete(currentStarvationSystems, toDeleteStarvationSystems);
 
-        currentTiles.extendMove(toAddCameras);
+        currentCameras.extendMove(toAddCameras);
         currentTiles.extendMove(toAddTiles);
-        currentTiles.extendMove(toAddHeroes);
-        currentTiles.extendMove(toAddEnemies);
-        currentTiles.extendMove(toAddFoodGenerators);
-        currentTiles.extendMove(toAddTirednessSystems);
-        currentTiles.extendMove(toAddStarvationSystems);
+        currentHeroes.extendMove(toAddHeroes);
+        currentEnemies.extendMove(toAddEnemies);
+        currentFoodGenerators.extendMove(toAddFoodGenerators);
+        currentFoods.extendMove(toAddFoods);
+        currentTirednessSystems.extendMove(toAddTirednessSystems);
+        currentStarvationSystems.extendMove(toAddStarvationSystems);
 
         for (int i = 0; i < currentCameras.size(); ++i)
             currentCameras.update(dt, i, this);
@@ -42,6 +45,8 @@ public:
             currentEnemies.update(dt, i, this);
         for (int i = 0; i < currentFoodGenerators.size(); ++i)
             currentFoodGenerators.update(dt, i, this);
+        for (int i = 0; i < currentFoods.size(); ++i)
+            currentFoods.update(dt, i, this);
         for (int i = 0; i < currentTirednessSystems.size(); ++i)
             currentTirednessSystems.update(dt, i, this);
         for (int i = 0; i < currentStarvationSystems.size(); ++i)
@@ -68,6 +73,10 @@ public:
     FoodGeneratorsArchetype currentFoodGenerators;
     FoodGeneratorsArchetype toAddFoodGenerators;
     std::set<TYPE_ID> toDeleteFoodGenerators;
+
+    FoodsArchetype currentFoods;
+    FoodsArchetype toAddFoods;
+    std::set<TYPE_ID> toDeleteFoods;
 
     TirednessSystemsArchetype currentTirednessSystems;
     TirednessSystemsArchetype toAddTirednessSystems;

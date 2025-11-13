@@ -2,6 +2,7 @@
 
 #include "restrictor.h"
 #include "stamina.h"
+#include "transform2d.h"
 #include <SDL3/SDL.h>
 #include <algorithm>
 
@@ -12,14 +13,9 @@ private:
     float accumulatedTime;
 
 public:
-    void on_update(float dt) override
+    void on_update(float dt, Transform2D &transform, IRestrictor *restrictor, Stamina &stamina)
     {
-        auto transform = get_owner()->get_component<Transform2D>();
-        auto restrictor = get_owner()->get_component<IRestrictor>();
-        auto stamina = get_owner()->get_component<Stamina>();
-        if (!transform || !restrictor || !stamina)
-            return;
-        accumulatedTime += dt * stamina->get_speed();
+        accumulatedTime += dt * stamina.get_speed();
         if (accumulatedTime < 1.0f)
             return;
         accumulatedTime -= 1.0f;
@@ -27,11 +23,11 @@ public:
         // try to move in a random direction
         int i = rand() % 4;
         int2 intDelta = directions[i];
-        int2 newPos = int2((int)transform->x + intDelta.x, (int)transform->y + intDelta.y);
+        int2 newPos = int2((int)transform.x + intDelta.x, (int)transform.y + intDelta.y);
         if (restrictor->can_pass(newPos))
         {
-            transform->x += intDelta.x;
-            transform->y += intDelta.y;
+            transform.x += intDelta.x;
+            transform.y += intDelta.y;
         }
     }
 };

@@ -5,7 +5,9 @@
 #include "archetypes/archetype.h"
 #include "starvation_system.h"
 
-struct StarvationSystemArchetype : Archetype
+class World;
+
+struct StarvationSystemsArchetype : Archetype
 {
     std::vector<StarvationSystem> starvationsystems;
 
@@ -15,7 +17,7 @@ struct StarvationSystemArchetype : Archetype
         starvationsystems[iFrom] = std::move(starvationsystems[iTo]);
     }
 
-    void extendMove(StarvationSystemArchetype &other)
+    void extendMove(StarvationSystemsArchetype &other)
     {
         ids.insert(ids.end(), std::make_move_iterator(other.ids.begin()), std::make_move_iterator(other.ids.end()));
         starvationsystems.insert(starvationsystems.end(), std::make_move_iterator(other.starvationsystems.begin()), std::make_move_iterator(other.starvationsystems.end()));
@@ -23,8 +25,5 @@ struct StarvationSystemArchetype : Archetype
         other.starvationsystems.clear();
     }
 
-    void update(int i, float dt, World *world)
-    {
-        // TODO
-    }
+    void update(int i, float dt, World *world);
 };

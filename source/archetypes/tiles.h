@@ -4,6 +4,8 @@
 
 #include "archetypes/archetype.h"
 
+class World;
+
 struct TilesArchetype : Archetype
 {
     std::vector<Sprite> sprites;
@@ -26,8 +28,5 @@ struct TilesArchetype : Archetype
         other.transform2ds.clear();
     }
 
-    void update(int i, float dt)
-    {
-        // TODO
-    }
+    void update(int i, float dt, World *world);
 };

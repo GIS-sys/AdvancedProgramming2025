@@ -9,7 +9,10 @@
 #include "restrictor.h"
 #include "health.h"
 #include "stamina.h"
+#include "predator.h"
 #include "food_consumer.h"
+
+class World;
 
 struct HeroesArchetype : Archetype
 {
@@ -53,8 +56,5 @@ struct HeroesArchetype : Archetype
         other.foodsources.clear();
     }
 
-    void update(int i, float dt, World *world)
-    {
-        // TODO
-    }
+    void update(int i, float dt, World *world);
 };

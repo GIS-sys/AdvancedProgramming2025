@@ -5,32 +5,35 @@
 #include "world.h"
 #include <stacktrace>
 
-void init_world(SDL_Renderer* renderer, World& world);
-void render_world(SDL_Window* window, SDL_Renderer* renderer, World& world);
+void init_world(SDL_Renderer *renderer, World &world);
+void render_world(SDL_Window *window, SDL_Renderer *renderer, World &world);
 
-int main(int argc, char* argv[])
+int main(int argc, char *argv[])
 {
-    if (!SDL_Init(SDL_INIT_VIDEO)) {
+    if (!SDL_Init(SDL_INIT_VIDEO))
+    {
         std::cerr << "SDL could not initialize! SDL_Error: "
                   << SDL_GetError() << std::endl;
         return 1;
     }
 
-    SDL_Window* window = SDL_CreateWindow(
+    SDL_Window *window = SDL_CreateWindow(
         "Advanced Programming Course(Last Name/First Name)",
         1600, 1200,
         SDL_WINDOW_RESIZABLE // вместо SDL_WINDOW_SHOWN
     );
 
-    if (!window) {
+    if (!window)
+    {
         std::cerr << "Window could not be created! SDL_Error: "
                   << SDL_GetError() << std::endl;
         SDL_Quit();
         return 1;
     }
 
-    SDL_Renderer* renderer = SDL_CreateRenderer(window, nullptr);
-    if (!renderer) {
+    SDL_Renderer *renderer = SDL_CreateRenderer(window, nullptr);
+    if (!renderer)
+    {
         std::cerr << "Renderer could not be created! SDL_Error: "
                   << SDL_GetError() << std::endl;
         SDL_DestroyWindow(window);
@@ -50,11 +53,14 @@ int main(int argc, char* argv[])
         SDL_Event e;
         Uint64 lastTicks = SDL_GetTicks();
 
-        while (!quit) {
+        while (!quit)
+        {
 
-	        OPTICK_FRAME("MainThread");
-            while (SDL_PollEvent(&e)) {
-                if (e.type == SDL_EVENT_QUIT) {
+            OPTICK_FRAME("MainThread");
+            while (SDL_PollEvent(&e))
+            {
+                if (e.type == SDL_EVENT_QUIT)
+                {
                     quit = true;
                 }
             }

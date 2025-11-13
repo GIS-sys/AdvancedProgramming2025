@@ -1,5 +1,7 @@
 #pragma once
 
+#include <set>
+
 using TYPE_ID = int;
 
 struct Archetype
