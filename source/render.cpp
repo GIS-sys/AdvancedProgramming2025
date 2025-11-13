@@ -4,17 +4,17 @@
 #include "sprite.h"
 #include "health.h"
 #include "stamina.h"
-#include "background_tag.h"
 #include <SDL3/SDL_render.h>
 
-void render_world(SDL_Window* window, SDL_Renderer* renderer, World& world)
+void render_world(SDL_Window *window, SDL_Renderer *renderer, World &world)
 {
     int screenW, screenH;
     SDL_GetWindowSize(window, &screenW, &screenH);
     // search of camera component
     std::shared_ptr<Camera2D> camera2d = nullptr;
     std::shared_ptr<Transform2D> camera_transform = nullptr;
-    for (const auto& object : world.get_objects()) {
+    for (const auto &object : world.get_objects())
+    {
         camera2d = object->get_component<Camera2D>();
         camera_transform = object->get_component<Transform2D>();
         if (camera2d && camera_transform)
@@ -24,7 +24,8 @@ void render_world(SDL_Window* window, SDL_Renderer* renderer, World& world)
         return;
 
     // Draw background sprites
-    for (const auto& object : world.get_objects()) {
+    for (const auto &object : world.get_objects())
+    {
         auto sprite = object->get_component<Sprite>();
         auto transform = object->get_component<Transform2D>();
         auto bgTag = object->get_component<BackGroundTag>();
@@ -39,7 +40,8 @@ void render_world(SDL_Window* window, SDL_Renderer* renderer, World& world)
     }
 
     // Draw foreground sprites
-    for (const auto& object : world.get_objects()) {
+    for (const auto &object : world.get_objects())
+    {
         auto sprite = object->get_component<Sprite>();
         auto transform = object->get_component<Transform2D>();
         auto bgTag = object->get_component<BackGroundTag>();
@@ -60,7 +62,8 @@ void render_world(SDL_Window* window, SDL_Renderer* renderer, World& world)
     std::vector<SDL_FRect> backBars;
     std::vector<SDL_FRect> healthBars;
     std::vector<SDL_FRect> staminaBars;
-    for (const auto& object : world.get_objects()) {
+    for (const auto &object : world.get_objects())
+    {
         auto transform = object->get_component<Transform2D>();
         auto health = object->get_component<Health>();
         auto stamina = object->get_component<Stamina>();
@@ -101,5 +104,4 @@ void render_world(SDL_Window* window, SDL_Renderer* renderer, World& world)
     SDL_RenderFillRects(renderer, healthBars.data(), int(healthBars.size()));
     SDL_SetRenderDrawColorFloat(renderer, staminaColor[0], staminaColor[1], staminaColor[2], staminaColor[3]);
     SDL_RenderFillRects(renderer, staminaBars.data(), int(staminaBars.size()));
-
 }
