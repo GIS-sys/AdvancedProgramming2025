@@ -14,8 +14,6 @@
 #include "health.h"
 #include "stamina.h"
 #include "food_consumer.h"
-#include "starvation_system.h"
-#include "tiredness_system.h"
 #include "predator.h"
 
 const int LevelWidth = 120;
@@ -84,6 +82,7 @@ void init_world(SDL_Renderer *renderer, World &world)
     world.toAddHeroes.irestrictors.push_back((IRestrictor *)(new DungeonRestrictor(dungeon)));
     world.toAddHeroes.healths.push_back(Health(100));
     world.toAddHeroes.staminas.push_back(Stamina(100));
+    world.toAddHeroes.foodsources.push_back(FoodConsumer());
 
     for (int e = 0; e < BotPopulationCount; ++e)
     {
