@@ -1,3 +1,12 @@
+# Homework 1 results (Debug profile)
+
+## Before
+![Profile before](readme_images/optick_before.png)
+
+## After
+
+![Profile after](readme_images/optick_after.png)
+
 # How To Build
 
 Download SDL3-devel-3.2.22-VC.zip
