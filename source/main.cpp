@@ -55,7 +55,6 @@ int main(int argc, char *argv[])
 
         while (!quit)
         {
-
             OPTICK_FRAME("MainThread");
             while (SDL_PollEvent(&e))
             {
