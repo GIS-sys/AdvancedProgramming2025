@@ -13,8 +13,14 @@ struct TirednessSystemsArchetype : Archetype
 
     void move(int iFrom, int iTo)
     {
-        ids[iFrom] = std::move(ids[iTo]);
-        tirednesssystems[iFrom] = std::move(tirednesssystems[iTo]);
+        ids[iTo] = std::move(ids[iFrom]);
+        tirednesssystems[iTo] = std::move(tirednesssystems[iFrom]);
+    }
+
+    void shrink(int toSize)
+    {
+        eraseAfterIndex(ids, toSize);
+        eraseAfterIndex(tirednesssystems, toSize);
     }
 
     void extendMove(TirednessSystemsArchetype &other)

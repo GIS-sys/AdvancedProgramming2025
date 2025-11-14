@@ -26,14 +26,26 @@ struct HeroesArchetype : Archetype
 
     void move(int iFrom, int iTo)
     {
-        ids[iFrom] = std::move(ids[iTo]);
-        sprites[iFrom] = std::move(sprites[iTo]);
-        transform2ds[iFrom] = std::move(transform2ds[iTo]);
-        heroes[iFrom] = std::move(heroes[iTo]);
-        irestrictors[iFrom] = std::move(irestrictors[iTo]);
-        healths[iFrom] = std::move(healths[iTo]);
-        staminas[iFrom] = std::move(staminas[iTo]);
-        foodsources[iFrom] = std::move(foodsources[iTo]);
+        ids[iTo] = std::move(ids[iFrom]);
+        sprites[iTo] = std::move(sprites[iFrom]);
+        transform2ds[iTo] = std::move(transform2ds[iFrom]);
+        heroes[iTo] = std::move(heroes[iFrom]);
+        irestrictors[iTo] = std::move(irestrictors[iFrom]);
+        healths[iTo] = std::move(healths[iFrom]);
+        staminas[iTo] = std::move(staminas[iFrom]);
+        foodsources[iTo] = std::move(foodsources[iFrom]);
+    }
+
+    void shrink(int toSize)
+    {
+        eraseAfterIndex(ids, toSize);
+        eraseAfterIndex(sprites, toSize);
+        eraseAfterIndex(transform2ds, toSize);
+        eraseAfterIndex(heroes, toSize);
+        eraseAfterIndex(irestrictors, toSize);
+        eraseAfterIndex(healths, toSize);
+        eraseAfterIndex(staminas, toSize);
+        eraseAfterIndex(foodsources, toSize);
     }
 
     void extendMove(HeroesArchetype &other)

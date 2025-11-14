@@ -15,9 +15,16 @@ struct TilesArchetype : Archetype
 
     void move(int iFrom, int iTo)
     {
-        ids[iFrom] = std::move(ids[iTo]);
-        sprites[iFrom] = std::move(sprites[iTo]);
-        transform2ds[iFrom] = std::move(transform2ds[iTo]);
+        ids[iTo] = std::move(ids[iFrom]);
+        sprites[iTo] = std::move(sprites[iFrom]);
+        transform2ds[iTo] = std::move(transform2ds[iFrom]);
+    }
+
+    void shrink(int toSize)
+    {
+        eraseAfterIndex(ids, toSize);
+        eraseAfterIndex(sprites, toSize);
+        eraseAfterIndex(transform2ds, toSize);
     }
 
     void extendMove(TilesArchetype &other)

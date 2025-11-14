@@ -15,9 +15,16 @@ struct CamerasArchetype : Archetype
 
     void move(int iFrom, int iTo)
     {
-        ids[iFrom] = std::move(ids[iTo]);
-        camera2ds[iFrom] = std::move(camera2ds[iTo]);
-        transform2ds[iFrom] = std::move(transform2ds[iTo]);
+        ids[iTo] = std::move(ids[iFrom]);
+        camera2ds[iTo] = std::move(camera2ds[iFrom]);
+        transform2ds[iTo] = std::move(transform2ds[iFrom]);
+    }
+
+    void shrink(int toSize)
+    {
+        eraseAfterIndex(ids, toSize);
+        eraseAfterIndex(camera2ds, toSize);
+        eraseAfterIndex(transform2ds, toSize);
     }
 
     void extendMove(CamerasArchetype &other)

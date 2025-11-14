@@ -13,8 +13,14 @@ struct StarvationSystemsArchetype : Archetype
 
     void move(int iFrom, int iTo)
     {
-        ids[iFrom] = std::move(ids[iTo]);
-        starvationsystems[iFrom] = std::move(starvationsystems[iTo]);
+        ids[iTo] = std::move(ids[iFrom]);
+        starvationsystems[iTo] = std::move(starvationsystems[iFrom]);
+    }
+
+    void shrink(int toSize)
+    {
+        eraseAfterIndex(ids, toSize);
+        eraseAfterIndex(starvationsystems, toSize);
     }
 
     void extendMove(StarvationSystemsArchetype &other)

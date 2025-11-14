@@ -24,7 +24,7 @@ void filterDelete(T &current, std::set<TYPE_ID> &toDelete)
     int counterWrite = 0;
     while (counterLookup < current.size())
     {
-        if (toDelete.find(current.ids[counterLookup]) != toDelete.end())
+        if (toDelete.find(current.ids[counterLookup]) == toDelete.end())
         {
             current.move(counterLookup, counterWrite);
             ++counterLookup;
@@ -35,6 +35,7 @@ void filterDelete(T &current, std::set<TYPE_ID> &toDelete)
             ++counterLookup;
         }
     }
+    current.shrink(counterWrite);
     toDelete.clear();
 }
 
@@ -46,4 +47,11 @@ void fillIDs(T &current)
     {
         current.ids.push_back(Archetype::getNextCounter());
     }
+}
+
+template <typename T>
+void eraseAfterIndex(std::vector<T> &vec, int i)
+{
+    if (i < (int)vec.size())
+        vec.erase(vec.begin() + i, vec.end());
 }

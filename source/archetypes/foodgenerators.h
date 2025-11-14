@@ -13,8 +13,14 @@ struct FoodGeneratorsArchetype : Archetype
 
     void move(int iFrom, int iTo)
     {
-        ids[iFrom] = std::move(ids[iTo]);
-        foodgenerators[iFrom] = std::move(foodgenerators[iTo]);
+        ids[iTo] = std::move(ids[iFrom]);
+        foodgenerators[iTo] = std::move(foodgenerators[iFrom]);
+    }
+
+    void shrink(int toSize)
+    {
+        eraseAfterIndex(ids, toSize);
+        eraseAfterIndex(foodgenerators, toSize);
     }
 
     void extendMove(FoodGeneratorsArchetype &other)

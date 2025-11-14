@@ -16,10 +16,18 @@ struct FoodsArchetype : Archetype
 
     void move(int iFrom, int iTo)
     {
-        ids[iFrom] = std::move(ids[iTo]);
-        transform2ds[iFrom] = std::move(transform2ds[iTo]);
-        sprites[iFrom] = std::move(sprites[iTo]);
-        foods[iFrom] = std::move(foods[iTo]);
+        ids[iTo] = std::move(ids[iFrom]);
+        transform2ds[iTo] = std::move(transform2ds[iFrom]);
+        sprites[iTo] = std::move(sprites[iFrom]);
+        foods[iTo] = std::move(foods[iFrom]);
+    }
+
+    void shrink(int toSize)
+    {
+        eraseAfterIndex(ids, toSize);
+        eraseAfterIndex(transform2ds, toSize);
+        eraseAfterIndex(sprites, toSize);
+        eraseAfterIndex(foods, toSize);
     }
 
     void extendMove(FoodsArchetype &other)
