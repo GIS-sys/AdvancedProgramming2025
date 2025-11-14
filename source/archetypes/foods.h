@@ -5,6 +5,7 @@
 #include "archetypes/archetype.h"
 #include "camera2d.h"
 #include "transform2d.h"
+#include "food.h"
 
 class World;
 
@@ -12,7 +13,7 @@ struct FoodsArchetype : Archetype
 {
     std::vector<Transform2D> transform2ds;
     std::vector<Sprite> sprites;
-    std::vector<IFood *> foods;
+    std::vector<FOOD_TYPES> foods;
 
     void move(int iFrom, int iTo)
     {

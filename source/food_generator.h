@@ -4,28 +4,21 @@
 #include "food.h"
 #include "dungeon_generator.h"
 
-class IFoodFabrique
-{
-public:
-    virtual void create_food(int2 position) = 0;
-    virtual int weight() const = 0; // for weighted random selection
-};
-
 class FoodGenerator
 {
 private:
     std::shared_ptr<Dungeon> dungeon;
-    std::vector<std::unique_ptr<IFoodFabrique>> fabriques;
+    std::vector<FOOD_FABRIQUE_TYPES> fabriques;
     float timeSinceLastSpawn = 0.f; // seconds between spawns
     float spawnInterval = 1.f;
     int fabriquesProbabilitySum = 0;
 
 public:
-    FoodGenerator(std::shared_ptr<Dungeon> dungeon, std::vector<std::unique_ptr<IFoodFabrique>> fabriques, float spawnInterval)
+    FoodGenerator(std::shared_ptr<Dungeon> dungeon, std::vector<FOOD_FABRIQUE_TYPES> fabriques, float spawnInterval)
         : dungeon(dungeon), fabriques(std::move(fabriques)), spawnInterval(spawnInterval)
     {
         for (const auto &fabrique : this->fabriques)
-            fabriquesProbabilitySum += fabrique->weight();
+            fabriquesProbabilitySum += weight(fabrique);
     }
 
     void generate_random_food()
@@ -34,12 +27,12 @@ public:
         int rand_value = rand() % fabriquesProbabilitySum;
         for (const auto &fabrique : fabriques)
         {
-            if (rand_value < fabrique->weight())
+            if (rand_value < weight(fabrique))
             {
-                fabrique->create_food(position);
+                create_food(fabrique, position);
                 break;
             }
-            rand_value -= fabrique->weight();
+            rand_value -= weight(fabrique);
         }
     }
     void on_update(float dt)

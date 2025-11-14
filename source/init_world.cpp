@@ -23,7 +23,7 @@ const int BotPopulationCount = 100;
 const float PredatorProbability = 0.2f;
 const int InitialFoodAmount = 100;
 
-std::vector<std::unique_ptr<IFoodFabrique>> create_food_fabriques(World &world, TileSet &tileset);
+std::vector<FOOD_FABRIQUE_TYPES> create_food_fabriques(World *world, TileSet &tileset);
 
 void init_world(SDL_Renderer *renderer, World &world)
 {
@@ -100,7 +100,7 @@ void init_world(SDL_Renderer *renderer, World &world)
             world.toAddEnemies.foodsources.push_back(FoodConsumer());
     }
 
-    auto foodFabriques = create_food_fabriques(world, tileset);
+    auto foodFabriques = create_food_fabriques(&world, tileset);
 
     world.toAddFoodGenerators.foodgenerators.push_back(FoodGenerator(dungeon, std::move(foodFabriques), 2.f / RoomAttempts));
     for (int i = 0; i < InitialFoodAmount; i++)
