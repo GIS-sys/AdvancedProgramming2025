@@ -3,6 +3,8 @@
 #include <vector>
 
 #include "archetypes/archetype.h"
+#include "sprite.h"
+#include "transform2d.h"
 
 class World;
 

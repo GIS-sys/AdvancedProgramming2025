@@ -1,6 +1,7 @@
 #pragma once
 
 #include <set>
+#include <vector>
 
 using TYPE_ID = int;
 
