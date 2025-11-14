@@ -8,52 +8,36 @@
 
 void render_world(SDL_Window *window, SDL_Renderer *renderer, World &world)
 {
-    // int screenW, screenH;
-    // SDL_GetWindowSize(window, &screenW, &screenH);
-    // // search of camera component
-    // std::shared_ptr<Camera2D> camera2d = nullptr;
-    // std::shared_ptr<Transform2D> camera_transform = nullptr;
-    // for (const auto &object : world.get_objects())
-    // {
-    //     camera2d = object->get_component<Camera2D>();
-    //     camera_transform = object->get_component<Transform2D>();
-    //     if (camera2d && camera_transform)
-    //         break;
-    // }
-    // if (!camera2d || !camera_transform)
-    //     return;
+    int screenW, screenH;
+    SDL_GetWindowSize(window, &screenW, &screenH);
 
-    // // Draw background sprites
-    // for (const auto &object : world.get_objects())
-    // {
-    //     auto sprite = object->get_component<Sprite>();
-    //     auto transform = object->get_component<Transform2D>();
-    //     auto bgTag = object->get_component<BackGroundTag>();
-    //     if (!bgTag)
-    //         continue;
-    //     if (!sprite || !transform)
-    //         continue;
-    //     SDL_FRect dst = to_camera_space(*transform, *camera_transform, *camera2d);
-    //     dst.x += screenW / 2;
-    //     dst.y += screenH / 2;
-    //     DrawSprite(renderer, *sprite, dst);
-    // }
+    // search of camera component
+    Camera2D &camera2d = world.currentCameras.camera2ds.back();
+    Transform2D &camera_transform = world.currentCameras.transform2ds.back();
 
-    // // Draw foreground sprites
-    // for (const auto &object : world.get_objects())
-    // {
-    //     auto sprite = object->get_component<Sprite>();
-    //     auto transform = object->get_component<Transform2D>();
-    //     auto bgTag = object->get_component<BackGroundTag>();
-    //     if (bgTag)
-    //         continue;
-    //     if (!sprite || !transform)
-    //         continue;
-    //     SDL_FRect dst = to_camera_space(*transform, *camera_transform, *camera2d);
-    //     dst.x += screenW / 2;
-    //     dst.y += screenH / 2;
-    //     DrawSprite(renderer, *sprite, dst);
-    // }
+    auto render_sprite = [&](Sprite *sprite, Transform2D *transform)
+    {
+        SDL_FRect dst = to_camera_space(*transform, camera_transform, camera2d);
+        dst.x += screenW / 2;
+        dst.y += screenH / 2;
+        DrawSprite(renderer, *sprite, dst);
+    };
+
+    // TilesArchetype currentTiles;
+    // FoodsArchetype currentFoods;
+    // EnemiesArchetype currentEnemies;
+    // HeroesArchetype currentHeroes;
+
+    // Draw sprites
+    for (int i = 0; i < world.currentTiles.size(); ++i)
+        render_sprite(&world.currentTiles.sprites[i], &world.currentTiles.transform2ds[i]);
+    for (int i = 0; i < world.currentFoods.size(); ++i)
+        render_sprite(&world.currentFoods.sprites[i], &world.currentFoods.transform2ds[i]);
+    for (int i = 0; i < world.currentEnemies.size(); ++i)
+        render_sprite(&world.currentEnemies.sprites[i], &world.currentEnemies.transform2ds[i]);
+    for (int i = 0; i < world.currentHeroes.size(); ++i)
+        render_sprite(&world.currentHeroes.sprites[i], &world.currentHeroes.transform2ds[i]);
+
     // // Draw bars without textures and without OOP
     // float grayColor[4] = {0.2f, 0.2f, 0.2f, 1.f};
     // float healthColor[4] = {0.91f, 0.27f, 0.22f, 1.f};
