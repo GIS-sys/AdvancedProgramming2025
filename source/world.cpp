@@ -36,19 +36,19 @@ void World::update(float dt)
     }
 
     for (int i = 0; i < currentCameras.size(); ++i)
-        currentCameras.update(dt, i, this);
+        currentCameras.update(i, dt, this);
     for (int i = 0; i < currentTiles.size(); ++i)
-        currentTiles.update(dt, i, this);
+        currentTiles.update(i, dt, this);
     for (int i = 0; i < currentHeroes.size(); ++i)
-        currentHeroes.update(dt, i, this);
+        currentHeroes.update(i, dt, this);
     for (int i = 0; i < currentEnemies.size(); ++i)
-        currentEnemies.update(dt, i, this);
+        currentEnemies.update(i, dt, this);
     for (int i = 0; i < currentFoodGenerators.size(); ++i)
-        currentFoodGenerators.update(dt, i, this);
+        currentFoodGenerators.update(i, dt, this);
     for (int i = 0; i < currentFoods.size(); ++i)
-        currentFoods.update(dt, i, this);
+        currentFoods.update(i, dt, this);
     for (int i = 0; i < currentTirednessSystems.size(); ++i)
-        currentTirednessSystems.update(dt, i, this);
+        currentTirednessSystems.update(i, dt, this);
     for (int i = 0; i < currentStarvationSystems.size(); ++i)
-        currentStarvationSystems.update(dt, i, this);
+        currentStarvationSystems.update(i, dt, this);
 }
