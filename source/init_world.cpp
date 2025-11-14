@@ -102,7 +102,7 @@ void init_world(SDL_Renderer *renderer, World &world)
 
     auto foodFabriques = create_food_fabriques(world, tileset);
 
-    world.toAddFoodGenerators.foodgenerators.push_back(FoodGenerator(dungeon, std::move(foodFabriques), 4.f / RoomAttempts));
+    world.toAddFoodGenerators.foodgenerators.push_back(FoodGenerator(dungeon, std::move(foodFabriques), 2.f / RoomAttempts));
     for (int i = 0; i < InitialFoodAmount; i++)
         world.toAddFoodGenerators.foodgenerators[0].generate_random_food();
     world.toAddStarvationSystems.starvationsystems.push_back(StarvationSystem());
