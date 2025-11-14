@@ -1,5 +1,3 @@
-#pragma once
-
 #include "tiredness_system.h"
 #include "world.h"
 

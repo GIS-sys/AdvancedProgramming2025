@@ -13,6 +13,8 @@ struct Archetype
     {
         return (int)ids.size();
     }
+
+    static int getNextCounter();
 };
 
 template <typename T>
@@ -34,4 +36,14 @@ void filterDelete(T &current, std::set<TYPE_ID> &toDelete)
         }
     }
     toDelete.clear();
+}
+
+template <typename T>
+void fillIDs(T &current)
+{
+    int size = current.sizeNoID();
+    while (current.size() < size)
+    {
+        current.ids.push_back(Archetype::getNextCounter());
+    }
 }

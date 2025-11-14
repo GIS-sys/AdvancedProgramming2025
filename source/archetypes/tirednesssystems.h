@@ -25,5 +25,11 @@ struct TirednessSystemsArchetype : Archetype
         other.tirednesssystems.clear();
     }
 
+    int sizeNoID() const
+    {
+        int size = tirednesssystems.size();
+        return size;
+    }
+
     void update(int i, float dt, World *world);
 };

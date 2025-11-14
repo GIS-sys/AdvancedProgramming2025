@@ -30,5 +30,15 @@ struct CamerasArchetype : Archetype
         other.transform2ds.clear();
     }
 
+    int sizeNoID() const
+    {
+        int size = camera2ds.size();
+        if (size != transform2ds.size())
+        {
+            throw "CamerasArchetype: sizeNoID() detected uneven vectors filling (you probably forgot to add some field when creating new object)";
+        }
+        return size;
+    }
+
     void update(int i, float dt, World *world);
 };

@@ -25,5 +25,11 @@ struct StarvationSystemsArchetype : Archetype
         other.starvationsystems.clear();
     }
 
+    int sizeNoID() const
+    {
+        int size = starvationsystems.size();
+        return size;
+    }
+
     void update(int i, float dt, World *world);
 };

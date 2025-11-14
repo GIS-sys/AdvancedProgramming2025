@@ -57,5 +57,20 @@ struct EnemiesArchetype : Archetype
         other.foodsources.clear();
     }
 
+    int sizeNoID() const
+    {
+        int size = sprites.size();
+        if (size != transform2ds.size() ||
+            size != enemies.size() ||
+            size != irestrictors.size() ||
+            size != healths.size() ||
+            size != staminas.size() ||
+            size != foodsources.size())
+        {
+            throw "EnemiesArchetype: sizeNoID() detected uneven vectors filling (you probably forgot to add some field when creating new object)";
+        }
+        return size;
+    }
+
     void update(int i, float dt, World *world);
 };

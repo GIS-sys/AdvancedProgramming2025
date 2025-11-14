@@ -30,5 +30,15 @@ struct TilesArchetype : Archetype
         other.transform2ds.clear();
     }
 
+    int sizeNoID() const
+    {
+        int size = sprites.size();
+        if (size != transform2ds.size())
+        {
+            throw "TilesArchetype: sizeNoID() detected uneven vectors filling (you probably forgot to add some field when creating new object)";
+        }
+        return size;
+    }
+
     void update(int i, float dt, World *world);
 };

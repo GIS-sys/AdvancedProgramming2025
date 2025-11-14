@@ -21,7 +21,19 @@
       "args": [],
       "cwd": "${workspaceFolder}",
       "preLaunchTask": "cmake build Release",
+    },
+    {
+      "name": "(gdb) Запуск",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/build/Debug/AdvancedProgramming.exe",
+      "args": [],
+      "stopAtEntry": false,
+      "cwd": "${fileDirname}",
+      "environment": ,
+      "externalConsole": false,
+      "MIMode": "gdb",
+      "miDebuggerPath": "gdb"
     }
-
   ]
 }

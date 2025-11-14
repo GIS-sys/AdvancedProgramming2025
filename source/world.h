@@ -26,6 +26,16 @@ public:
         filterDelete(currentTirednessSystems, toDeleteTirednessSystems);
         filterDelete(currentStarvationSystems, toDeleteStarvationSystems);
 
+        int last_heroes_size = currentHeroes.size();
+
+        fillIDs(toAddCameras);
+        fillIDs(toAddTiles);
+        fillIDs(toAddHeroes);
+        fillIDs(toAddEnemies);
+        fillIDs(toAddFoodGenerators);
+        fillIDs(toAddFoods);
+        fillIDs(toAddTirednessSystems);
+        fillIDs(toAddStarvationSystems);
         currentCameras.extendMove(toAddCameras);
         currentTiles.extendMove(toAddTiles);
         currentHeroes.extendMove(toAddHeroes);
@@ -34,6 +44,11 @@ public:
         currentFoods.extendMove(toAddFoods);
         currentTirednessSystems.extendMove(toAddTirednessSystems);
         currentStarvationSystems.extendMove(toAddStarvationSystems);
+
+        for (int i = last_heroes_size; i < currentHeroes.size(); ++i)
+        {
+            currentHeroes.heroes[i].on_create();
+        }
 
         for (int i = 0; i < currentCameras.size(); ++i)
             currentCameras.update(dt, i, this);

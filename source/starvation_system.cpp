@@ -1,5 +1,3 @@
-#pragma once
-
 #include "starvation_system.h"
 #include "world.h"
 

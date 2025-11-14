@@ -25,5 +25,11 @@ struct FoodGeneratorsArchetype : Archetype
         other.foodgenerators.clear();
     }
 
+    int sizeNoID() const
+    {
+        int size = foodgenerators.size();
+        return size;
+    }
+
     void update(int i, float dt, World *world);
 };
