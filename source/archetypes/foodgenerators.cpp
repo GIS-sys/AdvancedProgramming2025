@@ -5,5 +5,5 @@
 
 void FoodGeneratorsArchetype::update(int i, float dt, World *world)
 {
-    // TODO
+    foodgenerators[i].on_update(dt);
 }

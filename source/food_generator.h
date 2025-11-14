@@ -17,7 +17,7 @@ private:
     std::shared_ptr<Dungeon> dungeon;
     std::vector<std::unique_ptr<IFoodFabrique>> fabriques;
     float timeSinceLastSpawn = 0.f; // seconds between spawns
-    float spawnInterval = 1.f;
+    float spawnInterval = 0.5f;
     int fabriquesProbabilitySum = 0;
 
 public:
