@@ -78,7 +78,7 @@ void init_world(SDL_Renderer *renderer, World &world)
     auto heroPos = dungeon->getRandomFloorPosition();
     world.toAddHeroes.sprites.push_back(tileset.get_tile("knight"));
     world.toAddHeroes.transform2ds.push_back(Transform2D(heroPos.x, heroPos.y));
-    world.toAddHeroes.heroes.push_back(Hero(camera));
+    world.toAddHeroes.heroes.push_back(Hero(&world.toAddHeroes.transform2ds.back(), &world.toAddCameras.transform2ds[0]));
     world.toAddHeroes.irestrictors.push_back((IRestrictor *)(new DungeonRestrictor(dungeon)));
     world.toAddHeroes.healths.push_back(Health(100));
     world.toAddHeroes.staminas.push_back(Stamina(100));

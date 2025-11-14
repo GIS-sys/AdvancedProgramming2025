@@ -10,33 +10,28 @@ class Hero
 {
 private:
     float timeSinceLastMode = 0.f; // seconds between movement steps
-    GameObjectPtr mainCamera;
+    Transform2D *mainOwnerTransform2D;
+    Transform2D *mainCameraTransform2D;
 
     void bind_camera_transform()
     {
-        auto transform = get_owner()->get_component<Transform2D>();
-
-        if (mainCamera && transform)
+        if (mainCameraTransform2D && mainOwnerTransform2D)
         {
-            auto camTransform = mainCamera->get_component<Transform2D>();
-            if (camTransform)
-            {
-                camTransform->x = transform->x;
-                camTransform->y = transform->y;
-            }
+            mainCameraTransform2D->x = mainOwnerTransform2D->x;
+            mainCameraTransform2D->y = mainOwnerTransform2D->y;
         }
     }
 
 public:
-    Hero(GameObjectPtr mainCamera = nullptr)
-        : mainCamera(mainCamera) {}
+    Hero(Transform2D *mainOwnerTransform2D = nullptr, Transform2D *mainCameraTransform2D = nullptr)
+        : mainOwnerTransform2D(mainOwnerTransform2D), mainCameraTransform2D(mainCameraTransform2D) {}
 
-    void on_create() override
+    void on_create()
     {
         bind_camera_transform();
     }
 
-    void on_update(float dt, Transform2D &transform, IRestrictor *restrictor, Stamina &stamina) override
+    void on_update(float dt, Transform2D &transform, IRestrictor *restrictor, Stamina &stamina)
     {
         const bool *keys = SDL_GetKeyboardState(nullptr);
         const float cellPerSecond = stamina.get_speed();

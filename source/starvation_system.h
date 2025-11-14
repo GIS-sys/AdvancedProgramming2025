@@ -13,5 +13,9 @@ public:
     StarvationSystem &operator=(StarvationSystem &&other)
     {
         accumulator = other.accumulator;
+        return *this;
     }
+
+    StarvationSystem(const StarvationSystem &) = default;
+    StarvationSystem() = default;
 };

@@ -13,5 +13,9 @@ public:
     TirednessSystem &operator=(TirednessSystem &&other)
     {
         accumulator = other.accumulator;
+        return *this;
     }
+
+    TirednessSystem(const TirednessSystem &) = default;
+    TirednessSystem() = default;
 };

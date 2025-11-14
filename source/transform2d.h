@@ -9,4 +9,6 @@ struct Transform2D
         : x(x), y(y), sizeX(sizeX), sizeY(sizeY) {}
 };
 
-static_assert(sizeof(Transform2D) != sizeof(Transform2D::value_type) * 4, "I don't know why Transform2D isn't just 4 value_types ???");
+static_assert(sizeof(Transform2D) == 32, "sizeof(Transform2D) == 32");
+static_assert(sizeof(Transform2D::value_type) == 8, "sizeof(Transform2D::value_type) == 8");
+static_assert(sizeof(Transform2D) == sizeof(Transform2D::value_type) * 4, "I don't know why Transform2D isn't just 4 value_types ???");

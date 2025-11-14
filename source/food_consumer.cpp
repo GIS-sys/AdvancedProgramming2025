@@ -12,7 +12,7 @@ void FoodConsumer::on_update(float dt, World *world, Transform2D &myTransform, H
         if (int(myTransform.x) == int(foodTransform->x) &&
             int(myTransform.y) == int(foodTransform->y))
         {
-            world->currentFoods.foods[i].on_consume(myHealth, myStamina, world->currentFoods.ids[i]);
+            world->currentFoods.foods[i]->on_consume(world, myHealth, myStamina, world->currentFoods.ids[i]);
             break; // Consume only one food at a time
         }
     }

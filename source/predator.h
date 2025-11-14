@@ -2,7 +2,7 @@
 
 #include "health.h"
 #include "transform2d.h"
-#include "archetype.h"
+#include "archetypes/archetype.h"
 
 class World;
 
