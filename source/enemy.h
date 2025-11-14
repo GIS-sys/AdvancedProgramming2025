@@ -1,6 +1,6 @@
 #pragma once
 
-#include "restrictor.h"
+#include "dungeon_restrictor.h"
 #include "stamina.h"
 #include "transform2d.h"
 #include <SDL3/SDL.h>
@@ -13,7 +13,7 @@ private:
     float accumulatedTime;
 
 public:
-    void on_update(float dt, Transform2D &transform, IRestrictor *restrictor, Stamina &stamina)
+    void on_update(float dt, Transform2D &transform, DungeonRestrictor &restrictor, Stamina &stamina)
     {
         accumulatedTime += dt * stamina.get_speed();
         if (accumulatedTime < 1.0f)
@@ -24,7 +24,7 @@ public:
         int i = rand() % 4;
         int2 intDelta = directions[i];
         int2 newPos = int2((int)transform.x + intDelta.x, (int)transform.y + intDelta.y);
-        if (restrictor->can_pass(newPos))
+        if (restrictor.can_pass(newPos))
         {
             transform.x += intDelta.x;
             transform.y += intDelta.y;

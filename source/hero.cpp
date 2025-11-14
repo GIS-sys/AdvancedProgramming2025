@@ -12,7 +12,7 @@ void Hero::bind_camera_transform()
 Hero::Hero(World *world)
     : world(world) {}
 
-void Hero::on_update(float dt, Transform2D &transform, IRestrictor *restrictor, Stamina &stamina)
+void Hero::on_update(float dt, Transform2D &transform, DungeonRestrictor &restrictor, Stamina &stamina)
 {
     const bool *keys = SDL_GetKeyboardState(nullptr);
     const float cellPerSecond = stamina.get_speed();
@@ -47,7 +47,7 @@ void Hero::on_update(float dt, Transform2D &transform, IRestrictor *restrictor, 
     }
     timeSinceLastMode = 0.f;
     int2 newPos = int2((int)transform.x + intDelta.x, (int)transform.y + intDelta.y);
-    if (restrictor->can_pass(newPos))
+    if (restrictor.can_pass(newPos))
     {
         transform.x += intDelta.x;
         transform.y += intDelta.y;

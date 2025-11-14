@@ -1,6 +1,6 @@
 #pragma once
 
-#include "restrictor.h"
+#include "dungeon_restrictor.h"
 #include "stamina.h"
 #include "transform2d.h"
 #include <SDL3/SDL.h>
@@ -24,5 +24,5 @@ public:
         bind_camera_transform();
     }
 
-    void on_update(float dt, Transform2D &transform, IRestrictor *restrictor, Stamina &stamina);
+    void on_update(float dt, Transform2D &transform, DungeonRestrictor &restrictor, Stamina &stamina);
 };

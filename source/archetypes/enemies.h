@@ -7,7 +7,7 @@
 #include "sprite.h"
 #include "transform2d.h"
 #include "enemy.h"
-#include "restrictor.h"
+#include "dungeon_restrictor.h"
 #include "health.h"
 #include "stamina.h"
 #include "predator.h"
@@ -20,7 +20,7 @@ struct EnemiesArchetype : Archetype
     std::vector<Sprite> sprites;
     std::vector<Transform2D> transform2ds;
     std::vector<Enemy> enemies;
-    std::vector<IRestrictor *> irestrictors;
+    std::vector<DungeonRestrictor> irestrictors;
     std::vector<Health> healths;
     std::vector<Stamina> staminas;
     std::vector<std::variant<Predator, FoodConsumer>> foodsources;

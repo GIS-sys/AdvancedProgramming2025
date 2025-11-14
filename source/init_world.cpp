@@ -79,7 +79,7 @@ void init_world(SDL_Renderer *renderer, World &world)
     world.toAddHeroes.sprites.push_back(tileset.get_tile("knight"));
     world.toAddHeroes.transform2ds.push_back(Transform2D(heroPos.x, heroPos.y));
     world.toAddHeroes.heroes.push_back(Hero(&world));
-    world.toAddHeroes.irestrictors.push_back((IRestrictor *)(new DungeonRestrictor(dungeon)));
+    world.toAddHeroes.irestrictors.push_back(DungeonRestrictor(dungeon));
     world.toAddHeroes.healths.push_back(Health(100));
     world.toAddHeroes.staminas.push_back(Stamina(100));
     world.toAddHeroes.foodsources.push_back(FoodConsumer());
@@ -91,7 +91,7 @@ void init_world(SDL_Renderer *renderer, World &world)
         world.toAddEnemies.sprites.push_back(isPredator ? tileset.get_tile("ghost") : tileset.get_tile("peasant"));
         world.toAddEnemies.transform2ds.push_back(Transform2D(enemyPos.x, enemyPos.y));
         world.toAddEnemies.enemies.push_back(Enemy());
-        world.toAddEnemies.irestrictors.push_back((IRestrictor *)(new DungeonRestrictor(dungeon)));
+        world.toAddEnemies.irestrictors.push_back(DungeonRestrictor(dungeon));
         world.toAddEnemies.healths.push_back(Health(100));
         world.toAddEnemies.staminas.push_back(Stamina(100));
         if (isPredator)

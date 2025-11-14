@@ -6,7 +6,7 @@
 #include "sprite.h"
 #include "transform2d.h"
 #include "hero.h"
-#include "restrictor.h"
+#include "dungeon_restrictor.h"
 #include "health.h"
 #include "stamina.h"
 #include "predator.h"
@@ -19,7 +19,7 @@ struct HeroesArchetype : Archetype
     std::vector<Sprite> sprites;
     std::vector<Transform2D> transform2ds;
     std::vector<Hero> heroes;
-    std::vector<IRestrictor *> irestrictors;
+    std::vector<DungeonRestrictor> irestrictors;
     std::vector<Health> healths;
     std::vector<Stamina> staminas;
     std::vector<FoodConsumer> foodsources;
