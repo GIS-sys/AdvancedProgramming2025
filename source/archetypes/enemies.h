@@ -1,6 +1,5 @@
 #pragma once
 
-#include <variant>
 #include <vector>
 
 #include "archetypes/archetype.h"
@@ -12,6 +11,7 @@
 #include "stamina.h"
 #include "predator.h"
 #include "food_consumer.h"
+#include "food_sources.h"
 
 class World;
 
@@ -23,7 +23,7 @@ struct EnemiesArchetype : Archetype
     std::vector<DungeonRestrictor> irestrictors;
     std::vector<Health> healths;
     std::vector<Stamina> staminas;
-    std::vector<std::variant<Predator, FoodConsumer>> foodsources;
+    std::vector<FOOD_SOURCES_TYPE> foodsources;
 
     void move(int iFrom, int iTo)
     {
