@@ -9,7 +9,7 @@ public:
     DungeonRestrictor(std::shared_ptr<Dungeon> dungeon)
         : dungeon(dungeon) {}
 
-    bool can_pass(int2 coordinates)
+    bool can_pass(int2 coordinates) const
     {
         if (!dungeon)
             return false;

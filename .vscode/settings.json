@@ -71,7 +71,10 @@
         "xtree": "cpp",
         "set": "cpp",
         "stacktrace": "cpp",
-        "variant": "cpp"
+        "variant": "cpp",
+        "deque": "cpp",
+        "queue": "cpp",
+        "functional": "cpp"
     },
     "launchOption.currentConfig": {}
 }

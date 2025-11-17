@@ -24,5 +24,5 @@ public:
         bind_camera_transform();
     }
 
-    void on_update(float dt, Transform2D &transform, DungeonRestrictor &restrictor, Stamina &stamina);
+    void on_update(float dt, Transform2D &transform, const DungeonRestrictor &restrictor, Stamina &stamina);
 };

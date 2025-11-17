@@ -3,31 +3,31 @@
 #include "dungeon_restrictor.h"
 #include "stamina.h"
 #include "transform2d.h"
+#include "pathfinder.h"
 #include <SDL3/SDL.h>
 #include <algorithm>
 
 class Enemy
 {
 private:
+    Pathfinder pathfinder;
     // change transform by 1.0 unit when accumulatedDelta reaches 1.0
     float accumulatedTime;
 
 public:
-    void on_update(float dt, Transform2D &transform, DungeonRestrictor &restrictor, Stamina &stamina)
+    void on_update(float dt, Transform2D &transform, const DungeonRestrictor &restrictor, Stamina &stamina)
     {
         accumulatedTime += dt * stamina.get_speed();
-        if (accumulatedTime < 1.0f)
+        if (accumulatedTime < 4.0f)
             return;
-        accumulatedTime -= 1.0f;
-        const int2 directions[] = {int2{1, 0}, int2{-1, 0}, int2{0, 1}, int2{0, -1}};
-        // try to move in a random direction
-        int i = rand() % 4;
-        int2 intDelta = directions[i];
-        int2 newPos = int2((int)transform.x + intDelta.x, (int)transform.y + intDelta.y);
-        if (restrictor.can_pass(newPos))
+        accumulatedTime -= 4.0f;
+
+        pathfinder.updatePosition(transform, restrictor, std::make_optional<int2>({63, 8}));
+        int2 nextPos = pathfinder.getNextPos();
+        if (restrictor.can_pass(nextPos))
         {
-            transform.x += intDelta.x;
-            transform.y += intDelta.y;
+            transform.x = nextPos.x;
+            transform.y = nextPos.y;
         }
     }
 };

@@ -12,7 +12,7 @@ void Hero::bind_camera_transform()
 Hero::Hero(World *world)
     : world(world) {}
 
-void Hero::on_update(float dt, Transform2D &transform, DungeonRestrictor &restrictor, Stamina &stamina)
+void Hero::on_update(float dt, Transform2D &transform, const DungeonRestrictor &restrictor, Stamina &stamina)
 {
     const bool *keys = SDL_GetKeyboardState(nullptr);
     const float cellPerSecond = stamina.get_speed();
