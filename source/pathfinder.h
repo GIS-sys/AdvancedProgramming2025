@@ -29,16 +29,11 @@ public:
         {
             currentTargetPosition = *targetPosition;
             currentPath = findPathAStar(currentPos, currentTargetPosition, restrictor);
-            if (currentPath.empty() || currentPath.size() == 1)
+            if (currentPath.size() < 2)
             {
                 currentPath = findRandomPath(currentPos, restrictor);
             }
             currentPathIndex = 1;
-            // std::cout << std::endl;
-            // std::cout << currentPath.size() << " ";
-            // std::cout << currentPos.x << "," << currentPos.y << " ";
-            // std::cout << currentTargetPosition.x << "," << currentTargetPosition.y << " ";
-            // std::cout << std::endl;
         }
         else
         {
@@ -47,21 +42,28 @@ public:
     }
 
 private:
-    // A* pathfinding algorithm const
+    struct Node
+    {
+        int2 position;
+        float gCost; // cost from start to this node
+        float hCost; // heuristic cost to goal
+        float fCost() const { return gCost + hCost; }
+
+        bool operator>(const Node &other) const
+        {
+            return fCost() > other.fCost();
+        }
+    };
+
+    // A* pathfinding algorithm
     std::vector<int2> findPathAStar(
         int2 start,
         int2 goal,
         const DungeonRestrictor &restrictor,
         std::function<bool(int2)> cellValidator = nullptr,
-        std::function<float(int2, int2)> heuristic = heuristicManhattan)
+        std::function<float(int2, int2)> heuristic = heuristicManhattan) const
     {
-        // If start or goal is not passable, return empty path
-        if (!restrictor.can_pass(start) || !restrictor.can_pass(goal))
-        {
-            return {};
-        }
-
-        // Custom validation: combine restrictor check with optional validator
+        // combine restrictor check with optional validator
         auto isValidCell = [&](int2 cell)
         {
             if (!restrictor.can_pass(cell))
@@ -71,38 +73,26 @@ private:
             return true;
         };
 
-        // If goal is not valid according to custom validator, return empty path
-        if (cellValidator && !cellValidator(goal))
+        // check start
+        if (!restrictor.can_pass(start))
         {
             return {};
         }
 
-        // A* algorithm implementation
-        struct Node
+        // check end
+        if (!isValidCell(goal))
         {
-            int2 position;
-            float gCost; // Cost from start to this node
-            float hCost; // Heuristic cost to goal
-            float fCost() const { return gCost + hCost; }
+            return {};
+        }
 
-            bool operator>(const Node &other) const
-            {
-                return fCost() > other.fCost();
-            }
-        };
-
-        // Priority queue for open set
+        // A*
         std::priority_queue<Node, std::vector<Node>, std::greater<Node>> openSet;
-
-        // Maps for tracking costs and paths
         std::unordered_map<int, std::unordered_map<int, float>> gCostMap;
         std::unordered_map<int, std::unordered_map<int, int2>> cameFrom;
 
-        // Initialize start node
         openSet.push({start, 0.0f, heuristic(start, goal)});
         gCostMap[start.x][start.y] = 0.0f;
 
-        // Possible movement directions (4-way movement)
         const int2 directions[] = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
 
         while (!openSet.empty())
@@ -110,32 +100,24 @@ private:
             Node current = openSet.top();
             openSet.pop();
 
-            // Check if we reached the goal
-            if (current.position.x == goal.x && current.position.y == goal.y)
+            // end if the goal is reached
+            if (current.position == goal)
             {
                 return reconstructPath(cameFrom, current.position, start);
             }
 
-            // Explore neighbors
+            // explore neighbors
             for (const auto &dir : directions)
             {
-                int2 neighbor = {current.position.x + dir.x, current.position.y + dir.y};
-
-                // Check if neighbor is valid
+                int2 neighbor = current.position + dir;
                 if (!isValidCell(neighbor))
                 {
                     continue;
                 }
-
-                // Calculate tentative gCost
                 float tentativeGCost = gCostMap[current.position.x][current.position.y] + 1.0f;
-
-                // Check if we found a better path to neighbor
                 if (!gCostMap.count(neighbor.x) || !gCostMap[neighbor.x].count(neighbor.y) ||
                     tentativeGCost < gCostMap[neighbor.x][neighbor.y])
                 {
-
-                    // This path to neighbor is better than any previous one
                     cameFrom[neighbor.x][neighbor.y] = current.position;
                     gCostMap[neighbor.x][neighbor.y] = tentativeGCost;
 
@@ -145,7 +127,6 @@ private:
             }
         }
 
-        // No path found
         return {};
     }
 

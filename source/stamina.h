@@ -22,7 +22,7 @@ public:
     }
     float get_speed() const
     {
-        return 5.0f +                       // base N cell per second
-               (is_depleted() ? 0.0 : 5.0); // x2 speed when not depleted
+        return 5.0f +                                                     // base N cell per second
+               (is_depleted() ? 0.0 : 5.0 * (0.8 + 0.2 * current / max)); // x2 speed when not depleted, but slightly less when less stamina
     }
 };
