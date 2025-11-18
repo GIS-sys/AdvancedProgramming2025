@@ -3,7 +3,6 @@ project(AdvancedProgramming)
 
 set(CMAKE_CXX_STANDARD 23)
 
-
 # --- Собираем все .cpp из папки source ---
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS
     ${CMAKE_SOURCE_DIR}/source/*.cpp

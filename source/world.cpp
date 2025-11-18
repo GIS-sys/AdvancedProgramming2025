@@ -30,6 +30,8 @@ void World::update(float dt)
     currentTirednessSystems.extendMove(toAddTirednessSystems);
     currentStarvationSystems.extendMove(toAddStarvationSystems);
 
+    recalculateIndices();
+
     for (int i = last_heroes_size; i < currentHeroes.size(); ++i)
     {
         currentHeroes.heroes[i].on_create();
@@ -51,8 +53,6 @@ void World::update(float dt)
         currentTirednessSystems.update(i, dt, this);
     for (int i = 0; i < currentStarvationSystems.size(); ++i)
         currentStarvationSystems.update(i, dt, this);
-
-    recalculateIndices();
 }
 
 void World::recalculateIndices()
