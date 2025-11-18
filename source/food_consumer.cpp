@@ -7,6 +7,8 @@ void FoodConsumer::on_update(float dt, World *world, Transform2D &myTransform, H
 {
     for (int i = 0; i < world->currentFoods.size(); ++i)
     {
+        if (world->toDeleteFoods.contains(world->currentFoods.ids[i]))
+            continue;
         // Simple collision check (assuming both have Transform2D)
         Transform2D &foodTransform = world->currentFoods.transform2ds[i];
         if (int(myTransform.x) == int(foodTransform.x) &&

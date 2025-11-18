@@ -7,6 +7,8 @@ void Predator::on_update(float dt, World *world, Transform2D &myTransform, Healt
     {
         if (world->currentHeroes.ids[i] == myID)
             continue;
+        if (world->toDeleteHeroes.contains(world->currentHeroes.ids[i]))
+            continue;
         Transform2D &victimTransform = world->currentHeroes.transform2ds[i];
         if (int(myTransform.x) == int(victimTransform.x) &&
             int(myTransform.y) == int(victimTransform.y))
@@ -20,6 +22,8 @@ void Predator::on_update(float dt, World *world, Transform2D &myTransform, Healt
     for (int i = 0; i < world->currentEnemies.size(); ++i)
     {
         if (world->currentEnemies.ids[i] == myID)
+            continue;
+        if (world->toDeleteEnemies.contains(world->currentEnemies.ids[i]))
             continue;
         Transform2D &victimTransform = world->currentEnemies.transform2ds[i];
         if (int(myTransform.x) == int(victimTransform.x) &&
