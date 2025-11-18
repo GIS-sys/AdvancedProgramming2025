@@ -90,7 +90,6 @@ void init_world(SDL_Renderer *renderer, World &world)
         auto enemyPos = dungeon->getRandomFloorPosition();
         world.toAddEnemies.sprites.push_back(isPredator ? tileset.get_tile("ghost") : tileset.get_tile("peasant"));
         world.toAddEnemies.transform2ds.push_back(Transform2D(enemyPos.x, enemyPos.y));
-        world.toAddEnemies.enemies.push_back(Enemy());
         world.toAddEnemies.irestrictors.push_back(DungeonRestrictor(dungeon));
         world.toAddEnemies.healths.push_back(Health(100));
         world.toAddEnemies.staminas.push_back(Stamina(100));
@@ -98,11 +97,12 @@ void init_world(SDL_Renderer *renderer, World &world)
             world.toAddEnemies.foodsources.push_back(Predator());
         else
             world.toAddEnemies.foodsources.push_back(FoodConsumer());
+        world.toAddEnemies.enemies.push_back(Enemy(world.toAddEnemies.foodsources.back()));
     }
 
     auto foodFabriques = create_food_fabriques(&world, tileset);
 
-    world.toAddFoodGenerators.foodgenerators.push_back(FoodGenerator(dungeon, std::move(foodFabriques), 2.f / RoomAttempts));
+    world.toAddFoodGenerators.foodgenerators.push_back(FoodGenerator(dungeon, std::move(foodFabriques), 20.f / RoomAttempts));
     for (int i = 0; i < InitialFoodAmount; i++)
         world.toAddFoodGenerators.foodgenerators[0].generate_random_food();
     world.toAddStarvationSystems.starvationsystems.push_back(StarvationSystem());

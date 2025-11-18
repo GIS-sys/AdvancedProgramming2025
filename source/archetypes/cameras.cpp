@@ -5,5 +5,4 @@
 
 void CamerasArchetype::update(int i, float dt, World *world)
 {
-    // TODO
 }

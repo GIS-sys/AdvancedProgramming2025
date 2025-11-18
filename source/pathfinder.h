@@ -41,20 +41,7 @@ public:
         }
     }
 
-private:
-    struct Node
-    {
-        int2 position;
-        float gCost; // cost from start to this node
-        float hCost; // heuristic cost to goal
-        float fCost() const { return gCost + hCost; }
-
-        bool operator>(const Node &other) const
-        {
-            return fCost() > other.fCost();
-        }
-    };
-
+public:
     // A* pathfinding algorithm
     std::vector<int2> findPathAStar(
         int2 start,
@@ -134,6 +121,20 @@ private:
     {
         return std::abs(a.x - b.x) + std::abs(a.y - b.y);
     }
+
+private:
+    struct Node
+    {
+        int2 position;
+        float gCost; // cost from start to this node
+        float hCost; // heuristic cost to goal
+        float fCost() const { return gCost + hCost; }
+
+        bool operator>(const Node &other) const
+        {
+            return fCost() > other.fCost();
+        }
+    };
 
     static std::vector<int2> reconstructPath(std::unordered_map<int, std::unordered_map<int, int2>> &cameFrom, int2 current, int2 start)
     {

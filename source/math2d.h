@@ -19,6 +19,16 @@ struct int2
     {
         return {x + other.x, y + other.y};
     }
+
+    int2 operator-() const
+    {
+        return {-x, -y};
+    }
+
+    int2 operator-(const int2 &other) const
+    {
+        return *this + (-other);
+    }
 };
 
 struct float2
