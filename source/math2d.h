@@ -1,5 +1,13 @@
 #pragma once
 
+#include <cmath>
+
+struct float2
+{
+    float x, y;
+    float2(float x = 0, float y = 0) : x(x), y(y) {}
+};
+
 struct int2
 {
     int x, y;
@@ -29,10 +37,12 @@ struct int2
     {
         return *this + (-other);
     }
-};
 
-struct float2
-{
-    float x, y;
-    float2(float x = 0, float y = 0) : x(x), y(y) {}
+    float length() const { return std::sqrt(x * x + y * y); }
+
+    int2 toDirection() const
+    {
+        float2 copy{x / length(), y / length()};
+        return {(int)(copy.x * 2), (int)(copy.y * 2)};
+    }
 };

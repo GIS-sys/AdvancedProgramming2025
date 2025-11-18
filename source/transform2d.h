@@ -1,5 +1,7 @@
 #pragma once
 
+#include "math2d.h"
+
 struct Transform2D
 {
     using value_type = double;
@@ -7,6 +9,8 @@ struct Transform2D
     value_type sizeX, sizeY;
     Transform2D(value_type x = 0, value_type y = 0, value_type sizeX = 1, value_type sizeY = 1)
         : x(x), y(y), sizeX(sizeX), sizeY(sizeY) {}
+
+    int2 point() const { return {(int)x, (int)y}; }
 };
 
 static_assert(sizeof(Transform2D) == 32, "sizeof(Transform2D) == 32");

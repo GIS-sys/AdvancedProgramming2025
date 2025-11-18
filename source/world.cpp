@@ -51,4 +51,19 @@ void World::update(float dt)
         currentTirednessSystems.update(i, dt, this);
     for (int i = 0; i < currentStarvationSystems.size(); ++i)
         currentStarvationSystems.update(i, dt, this);
+
+    recalculateIndices();
+}
+
+void World::recalculateIndices()
+{
+    indicesEnemiesHunters.clear();
+    indicesEnemiesGatherers.clear();
+    for (int i = 0; i < currentEnemies.size(); ++i)
+    {
+        if (std::holds_alternative<Predator>(currentEnemies.foodsources[i]))
+            indicesEnemiesHunters.push_back(i);
+        if (std::holds_alternative<FoodConsumer>(currentEnemies.foodsources[i]))
+            indicesEnemiesGatherers.push_back(i);
+    }
 }

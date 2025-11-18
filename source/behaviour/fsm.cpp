@@ -34,7 +34,7 @@ int2 FSM::getTarget(World *world, const int2 &currentPos, const DungeonRestricto
     case BehaviourState::IDLE:
         return restrictor.dungeon->getRandomFloorPosition();
     case BehaviourState::MATE:
-        return findClosestNonPredator(world, currentPos, pathfinder);
+        return findClosestMate(world, currentPos, pathfinder, foodSourceType);
     case BehaviourState::HUNT:
         return findClosestFoodConsumer(world, currentPos, pathfinder);
     }
@@ -73,32 +73,70 @@ void FSM::updatePredator(World *world, const int2 &currentPos, Stamina &stamina,
     }
 }
 
-bool FSM::hasPredatorNearby(World *world, const int2 &position, int distance)
+bool FSM::hasPredatorNearby(World *world, const int2 &position, float distance)
 {
     // TODO
+    for (int i : world->getIndicesEnemiesHunters())
+        if ((world->currentEnemies.transform2ds[i].point() - position).length() < distance)
+            return true;
     return false;
 }
 
 int2 FSM::findOppositeToClosestPredator(World *world, const int2 &position, const Pathfinder &pathfinder)
 {
     // TODO
-    return position;
+    int2 enemyPosition = findClosestPredator(world, position, pathfinder);
+    int2 deltaToEnemy = enemyPosition - position;
+    return position - deltaToEnemy.toDirection();
 }
 
 int2 FSM::findClosestFood(World *world, const int2 &position, const Pathfinder &pathfinder)
 {
     // TODO
-    return position - int2{2, 0};
+    int minIndex = 0;
+    for (int i = 0; i < world->currentFoods.size(); ++i)
+        if ((world->currentFoods.transform2ds[i].point() - position).length() < (world->currentFoods.transform2ds[minIndex].point() - position).length())
+            minIndex = i;
+    return world->currentFoods.transform2ds[minIndex].point();
 }
 
-int2 FSM::findClosestNonPredator(World *world, const int2 &position, const Pathfinder &pathfinder)
+int2 FSM::findClosestMate(World *world, const int2 &position, const Pathfinder &pathfinder, FOOD_SOURCES_TYPE foodSourceType)
 {
     // TODO
-    return position;
+    if (std::holds_alternative<FoodConsumer>(foodSourceType))
+    {
+        return findClosestFoodConsumer(world, position, pathfinder);
+    }
+    else
+    {
+        return findClosestPredator(world, position, pathfinder);
+    }
+}
+
+int2 FSM::findClosestPredator(World *world, const int2 &position, const Pathfinder &pathfinder)
+{
+    // TODO
+    int minIndex = 0;
+    for (int i : world->getIndicesEnemiesHunters())
+    {
+        if (world->currentEnemies.transform2ds[i].point() == position)
+            continue;
+        if ((world->currentEnemies.transform2ds[i].point() - position).length() < (world->currentEnemies.transform2ds[minIndex].point() - position).length())
+            minIndex = i;
+    }
+    return world->currentEnemies.transform2ds[minIndex].point();
 }
 
 int2 FSM::findClosestFoodConsumer(World *world, const int2 &position, const Pathfinder &pathfinder)
 {
     // TODO
-    return position + int2{2, 0};
+    int minIndex = 0;
+    for (int i : world->getIndicesEnemiesGatherers())
+    {
+        if (world->currentEnemies.transform2ds[i].point() == position)
+            continue;
+        if ((world->currentEnemies.transform2ds[i].point() - position).length() < (world->currentEnemies.transform2ds[minIndex].point() - position).length())
+            minIndex = i;
+    }
+    return world->currentEnemies.transform2ds[minIndex].point();
 }
