@@ -34,7 +34,7 @@ private:
     void updateFoodConsumer(World *world, const int2 &currentPos, Stamina &stamina, Health &health);
     void updatePredator(World *world, const int2 &currentPos, Stamina &stamina, Health &health);
 
-    bool hasPredatorNearby(World *world, const int2 &position, float distance = 10.0f);
+    bool hasPredatorNearby(World *world, const int2 &position, int distance = 10);
     static int2 findOppositeToClosestPredator(World *world, const int2 &position, const Pathfinder &pathfinder);
     static int2 findClosestFood(World *world, const int2 &position, const Pathfinder &pathfinder);
     static int2 findClosestMate(World *world, const int2 &position, const Pathfinder &pathfinder, FOOD_SOURCES_TYPE foodSourceType);

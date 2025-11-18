@@ -73,18 +73,16 @@ void FSM::updatePredator(World *world, const int2 &currentPos, Stamina &stamina,
     }
 }
 
-bool FSM::hasPredatorNearby(World *world, const int2 &position, float distance)
+bool FSM::hasPredatorNearby(World *world, const int2 &position, int distance)
 {
-    // TODO
     for (int i : world->getIndicesEnemiesHunters())
-        if ((world->currentEnemies.transform2ds[i].point() - position).length() < distance)
+        if ((world->currentEnemies.transform2ds[i].point() - position).manhattanLength() < distance)
             return true;
     return false;
 }
 
 int2 FSM::findOppositeToClosestPredator(World *world, const int2 &position, const Pathfinder &pathfinder)
 {
-    // TODO
     int2 enemyPosition = findClosestPredator(world, position, pathfinder);
     int2 deltaToEnemy = enemyPosition - position;
     return position - deltaToEnemy.toDirection();
@@ -92,17 +90,15 @@ int2 FSM::findOppositeToClosestPredator(World *world, const int2 &position, cons
 
 int2 FSM::findClosestFood(World *world, const int2 &position, const Pathfinder &pathfinder)
 {
-    // TODO
     int minIndex = 0;
     for (int i = 0; i < world->currentFoods.size(); ++i)
-        if ((world->currentFoods.transform2ds[i].point() - position).length() < (world->currentFoods.transform2ds[minIndex].point() - position).length())
+        if ((world->currentFoods.transform2ds[i].point() - position).manhattanLength() < (world->currentFoods.transform2ds[minIndex].point() - position).manhattanLength())
             minIndex = i;
     return world->currentFoods.transform2ds[minIndex].point();
 }
 
 int2 FSM::findClosestMate(World *world, const int2 &position, const Pathfinder &pathfinder, FOOD_SOURCES_TYPE foodSourceType)
 {
-    // TODO
     if (std::holds_alternative<FoodConsumer>(foodSourceType))
     {
         return findClosestFoodConsumer(world, position, pathfinder);
@@ -121,7 +117,7 @@ int2 FSM::findClosestPredator(World *world, const int2 &position, const Pathfind
     {
         if (world->currentEnemies.transform2ds[i].point() == position)
             continue;
-        if ((world->currentEnemies.transform2ds[i].point() - position).length() < (world->currentEnemies.transform2ds[minIndex].point() - position).length())
+        if ((world->currentEnemies.transform2ds[i].point() - position).manhattanLength() < (world->currentEnemies.transform2ds[minIndex].point() - position).manhattanLength())
             minIndex = i;
     }
     return world->currentEnemies.transform2ds[minIndex].point();
@@ -135,7 +131,7 @@ int2 FSM::findClosestFoodConsumer(World *world, const int2 &position, const Path
     {
         if (world->currentEnemies.transform2ds[i].point() == position)
             continue;
-        if ((world->currentEnemies.transform2ds[i].point() - position).length() < (world->currentEnemies.transform2ds[minIndex].point() - position).length())
+        if ((world->currentEnemies.transform2ds[i].point() - position).manhattanLength() < (world->currentEnemies.transform2ds[minIndex].point() - position).manhattanLength())
             minIndex = i;
     }
     return world->currentEnemies.transform2ds[minIndex].point();

@@ -40,6 +40,8 @@ struct int2
 
     float length() const { return std::sqrt(x * x + y * y); }
 
+    int manhattanLength() const { return std::abs(x) + std::abs(y); }
+
     int2 toDirection() const
     {
         float2 copy{x / length(), y / length()};
