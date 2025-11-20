@@ -15,19 +15,20 @@ BehaviourTree::BehaviourTree(FOOD_SOURCES_TYPE foodSourceType)
 void BehaviourTree::buildTree()
 {
     // TODO
-    auto root = std::make_shared<BehaviourTreeNodeCondition>([](BehaviourUpdateData data) -> bool
-                                                             { return data.health.current < 80; });
+    auto root = new BehaviourTreeNodeCondition([](BehaviourUpdateData data) -> bool
+                                               { return data.health.current < 80; });
     rootNode = root;
-    root->childLeft = std::make_shared<BehaviourTreeNodeDebug>("child left");
-    root->childRight = std::make_shared<BehaviourTreeNodeDebug>("child right");
-    // auto root = std::make_shared<BehaviourTreeNodeDebug>("AAAAAAAA");
-    // rootNode = root;
+    root->childLeft = new BehaviourTreeNodeDebug("child left");
+    root->childRight = new BehaviourTreeNodeDebug("child right");
 }
 
 void BehaviourTree::update(BehaviourUpdateData data)
 {
-    // auto [r, g, b] = currentNode->getCurrentColor();
-    // std::cout << r << g << b << std::endl;
+    if (!rootNode)
+    {
+        std::cout << "ERROR" << std::endl;
+        return;
+    }
     currentNode->update(data, currentNode, currentTarget);
     if (!currentNode)
         currentNode = rootNode;

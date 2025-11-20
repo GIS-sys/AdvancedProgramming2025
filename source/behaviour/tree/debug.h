@@ -11,7 +11,7 @@ public:
 
     BehaviourTreeNodeDebug(std::string text) : text(text) {}
 
-    void update(BehaviourUpdateData data, std::shared_ptr<BehaviourTreeNodeBase> &currentNode, int2 &currentTarget) override
+    void update(BehaviourUpdateData data, BehaviourTreeNodeBase *&currentNode, int2 &currentTarget) override
     {
         std::cout << text << std::endl;
         goToParent(currentNode);

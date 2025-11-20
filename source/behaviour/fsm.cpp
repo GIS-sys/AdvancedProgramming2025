@@ -15,8 +15,6 @@ void BehaviourFSM::switchToState(BehaviourState newState)
 {
     stateChanged = (currentState != newState);
     currentState = newState;
-    // stateChanged = true;
-    // currentState = BehaviourState::AVOID_PREDATORS;
 }
 
 void BehaviourFSM::update(BehaviourUpdateData data)

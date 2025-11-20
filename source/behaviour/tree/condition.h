@@ -6,15 +6,21 @@
 class BehaviourTreeNodeCondition : public BehaviourTreeNodeBase
 {
 public:
-    std::shared_ptr<BehaviourTreeNodeBase> childLeft;
-    std::shared_ptr<BehaviourTreeNodeBase> childRight;
+    BehaviourTreeNodeBase *childLeft = nullptr;
+    BehaviourTreeNodeBase *childRight = nullptr;
     std::function<bool(BehaviourUpdateData)> conditionIsRight;
 
     BehaviourTreeNodeCondition(std::function<bool(BehaviourUpdateData)> conditionIsRight) : conditionIsRight(conditionIsRight) {}
-
-    void update(BehaviourUpdateData data, std::shared_ptr<BehaviourTreeNodeBase> &currentNode, int2 &currentTarget) override
+    ~BehaviourTreeNodeCondition()
     {
-        return;
+        if (childLeft)
+            delete childLeft;
+        if (childRight)
+            delete childRight;
+    }
+
+    void update(BehaviourUpdateData data, BehaviourTreeNodeBase *&currentNode, int2 &currentTarget) override
+    {
         if (status == Status::EXECUTING)
         {
             // We are here after last step
@@ -43,10 +49,9 @@ public:
 private:
     void buildWithChildren() override
     {
-        // std::cout << "childLeft" << childLeft;
-        // if (childLeft)
-        //     childLeft->build(std::shared_ptr<BehaviourTreeNodeCondition>(this));
-        // if (childRight)
-        //     childRight->build(std::shared_ptr<BehaviourTreeNodeCondition>(this));
+        if (childLeft)
+            childLeft->build(this);
+        if (childRight)
+            childRight->build(this);
     }
 };
