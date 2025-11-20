@@ -11,6 +11,7 @@
 #include "archetypes/starvationsystems.h"
 #include "archetypes/tiles.h"
 #include "archetypes/tirednesssystems.h"
+#include "archetypes/matesystem.h"
 
 #include "cache.h"
 
@@ -61,4 +62,8 @@ public:
     StarvationSystemsArchetype currentStarvationSystems;
     StarvationSystemsArchetype toAddStarvationSystems;
     std::set<TYPE_ID> toDeleteStarvationSystems;
+
+    MateSystemsArchetype currentMateSystems;
+    MateSystemsArchetype toAddMateSystems;
+    std::set<TYPE_ID> toDeleteMateSystems;
 };

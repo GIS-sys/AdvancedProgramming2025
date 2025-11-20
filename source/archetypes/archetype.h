@@ -14,6 +14,11 @@ struct Archetype
         return (int)ids.size();
     }
 
+    bool empty() const
+    {
+        return size() == 0;
+    }
+
     static int getNextCounter();
 };
 

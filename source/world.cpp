@@ -10,6 +10,7 @@ void World::update(float dt)
     filterDelete(currentFoods, toDeleteFoods);
     filterDelete(currentTirednessSystems, toDeleteTirednessSystems);
     filterDelete(currentStarvationSystems, toDeleteStarvationSystems);
+    filterDelete(currentMateSystems, toDeleteMateSystems);
 
     int last_heroes_size = currentHeroes.size();
 
@@ -21,6 +22,7 @@ void World::update(float dt)
     fillIDs(toAddFoods);
     fillIDs(toAddTirednessSystems);
     fillIDs(toAddStarvationSystems);
+    fillIDs(toAddMateSystems);
     currentCameras.extendMove(toAddCameras);
     currentTiles.extendMove(toAddTiles);
     currentHeroes.extendMove(toAddHeroes);
@@ -29,6 +31,7 @@ void World::update(float dt)
     currentFoods.extendMove(toAddFoods);
     currentTirednessSystems.extendMove(toAddTirednessSystems);
     currentStarvationSystems.extendMove(toAddStarvationSystems);
+    currentMateSystems.extendMove(toAddMateSystems);
 
     recalculateIndices();
 
@@ -53,6 +56,8 @@ void World::update(float dt)
         currentTirednessSystems.update(i, dt, this);
     for (int i = 0; i < currentStarvationSystems.size(); ++i)
         currentStarvationSystems.update(i, dt, this);
+    for (int i = 0; i < currentMateSystems.size(); ++i)
+        currentMateSystems.update(i, dt, this);
 }
 
 void World::recalculateIndices()

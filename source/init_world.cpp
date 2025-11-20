@@ -107,4 +107,5 @@ void init_world(SDL_Renderer *renderer, World &world)
         world.toAddFoodGenerators.foodgenerators[0].generate_random_food();
     world.toAddStarvationSystems.starvationsystems.push_back(StarvationSystem());
     world.toAddTirednessSystems.tirednesssystems.push_back(TirednessSystem());
+    world.toAddMateSystems.matesystems.push_back(MateSystem());
 }

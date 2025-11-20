@@ -55,6 +55,8 @@ int2 BehaviourBase::findClosestFoodStamina(World *world, const int2 &position, c
 template <typename F>
 int2 BehaviourBase::findClosestFood(World *world, const int2 &position, const Pathfinder &pathfinder, F &&lambdaFilter)
 {
+    if (world->currentFoods.empty())
+        return {-1000, -1000};
     int minIndex = 0;
     for (int i = 0; i < world->currentFoods.size(); ++i)
     {
@@ -68,6 +70,8 @@ int2 BehaviourBase::findClosestFood(World *world, const int2 &position, const Pa
 
 int2 BehaviourBase::findClosestPredator(World *world, const int2 &position, const Pathfinder &pathfinder)
 {
+    if (world->currentEnemies.empty())
+        return {-1000, -1000};
     int minIndex = 0;
     for (int i : world->getIndicesEnemiesHunters())
     {
@@ -81,6 +85,8 @@ int2 BehaviourBase::findClosestPredator(World *world, const int2 &position, cons
 
 int2 BehaviourBase::findClosestFoodConsumer(World *world, const int2 &position, const Pathfinder &pathfinder)
 {
+    if (world->currentEnemies.empty())
+        return {-1000, -1000};
     int minIndex = 0;
     for (int i : world->getIndicesEnemiesGatherers())
     {
@@ -94,6 +100,8 @@ int2 BehaviourBase::findClosestFoodConsumer(World *world, const int2 &position, 
 
 int2 BehaviourBase::findClosestHero(World *world, const int2 &position, const Pathfinder &pathfinder)
 {
+    if (world->currentHeroes.empty())
+        return {-1000, -1000};
     int minIndex = 0;
     for (int i = 0; i < world->currentHeroes.size(); ++i)
     {
