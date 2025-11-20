@@ -2,18 +2,12 @@
 
 #include "world.h"
 
-bool hasPredatorNearby2(World *world, const int2 &position, int distance)
+bool BehaviourBase::hasPredatorNearby(World *world, const int2 &position, int distance)
 {
     for (int i : world->getIndicesEnemiesHunters())
         if ((world->currentEnemies.transform2ds[i].point() - position).manhattanLength() < distance)
             return true;
     return false;
-}
-
-bool BehaviourBase::hasPredatorNearby(World *world, const int2 &position, int distance)
-{
-    bool x = hasPredatorNearby2(world, position, distance);
-    return x;
 }
 
 int2 BehaviourBase::findOppositeToClosestPredator(World *world, const int2 &position, const Pathfinder &pathfinder, const DungeonRestrictor &restrictor)

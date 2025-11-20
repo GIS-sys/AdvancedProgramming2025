@@ -31,8 +31,8 @@ void Predator::on_update(float dt, World *world, Transform2D &myTransform, Healt
         if (int(myTransform.x) == int(victimTransform.x) &&
             int(myTransform.y) == int(victimTransform.y))
         {
-            Health &victimHp = world->currentHeroes.healths[i];
-            Stamina &victimStamina = world->currentHeroes.staminas[i];
+            Health &victimHp = world->currentEnemies.healths[i];
+            Stamina &victimStamina = world->currentEnemies.staminas[i];
             myHealth.change(victimHp.current);                           // heal predator
             myStamina.change(victimStamina.current);                     // restore predator
             world->toDeleteEnemies.insert(world->currentEnemies.ids[i]); // kill victim
