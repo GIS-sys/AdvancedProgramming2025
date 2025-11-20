@@ -14,8 +14,9 @@ void Predator::on_update(float dt, World *world, Transform2D &myTransform, Healt
             int(myTransform.y) == int(victimTransform.y))
         {
             Health &victimHp = world->currentHeroes.healths[i];
+            Stamina &victimStamina = world->currentHeroes.staminas[i];
             myHealth.change(victimHp.current);                         // heal predator
-            myStamina.change(victimHp.current);                        // restore predator
+            myStamina.change(victimStamina.current);                   // restore predator
             world->toDeleteHeroes.insert(world->currentHeroes.ids[i]); // kill victim
             return;                                                    // Consume only one victim at a time
         }
@@ -30,9 +31,10 @@ void Predator::on_update(float dt, World *world, Transform2D &myTransform, Healt
         if (int(myTransform.x) == int(victimTransform.x) &&
             int(myTransform.y) == int(victimTransform.y))
         {
-            Health &victimHp = world->currentEnemies.healths[i];
+            Health &victimHp = world->currentHeroes.healths[i];
+            Stamina &victimStamina = world->currentHeroes.staminas[i];
             myHealth.change(victimHp.current);                           // heal predator
-            myStamina.change(victimHp.current);                          // restore predator
+            myStamina.change(victimStamina.current);                     // restore predator
             world->toDeleteEnemies.insert(world->currentEnemies.ids[i]); // kill victim
             return;                                                      // Consume only one victim at a time
         }

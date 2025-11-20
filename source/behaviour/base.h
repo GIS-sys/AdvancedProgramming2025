@@ -33,7 +33,7 @@ public:
     // Override these
 
 protected:
-    static bool hasPredatorNearby(World *world, const int2 &position, int distance = 10);
+    static bool hasPredatorNearby(World *world, const int2 &position, int distance = 100);
     static int2 findOppositeToClosestPredator(World *world, const int2 &position, const Pathfinder &pathfinder);
     int2 findClosestFood(World *world, const int2 &position, const Pathfinder &pathfinder);
     int2 findClosestFoodHealth(World *world, const int2 &position, const Pathfinder &pathfinder);

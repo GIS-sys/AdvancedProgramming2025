@@ -34,6 +34,7 @@ public:
 private:
     enum class BehaviourState
     {
+        START,
         IDLE,
         AVOID_PREDATORS,
         FEED_HEALTH,
@@ -45,6 +46,8 @@ private:
     {
         switch (state)
         {
+        case BehaviourState::START:
+            return "START";
         case BehaviourState::IDLE:
             return "IDLE";
         case BehaviourState::AVOID_PREDATORS:

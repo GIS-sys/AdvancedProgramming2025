@@ -15,6 +15,8 @@ void BehaviourFSM::switchToState(BehaviourState newState)
 {
     stateChanged = (currentState != newState);
     currentState = newState;
+    // stateChanged = true;
+    // currentState = BehaviourState::AVOID_PREDATORS;
 }
 
 void BehaviourFSM::update(BehaviourUpdateData data)
@@ -25,6 +27,15 @@ void BehaviourFSM::update(BehaviourUpdateData data)
 
 void BehaviourFSM::changeState(BehaviourUpdateData data)
 {
+    stateChanged = false;
+
+    // START -> IDLE
+    if (currentState == BehaviourState::START)
+    {
+        switchToState(BehaviourState::IDLE);
+        return;
+    }
+
     // ANY -> AVOID_PREDATORS
     if (std::holds_alternative<FoodConsumer>(foodSourceType) && hasPredatorNearby(data.world, data.currentPos))
     {
@@ -69,7 +80,7 @@ void BehaviourFSM::changeState(BehaviourUpdateData data)
             switchToState(BehaviourState::IDLE);
         break;
     case BehaviourState::FEED_STAMINA:
-        if (data.health.current > 50)
+        if (data.stamina.current > 50)
             switchToState(BehaviourState::IDLE);
         break;
     case BehaviourState::MATE:
