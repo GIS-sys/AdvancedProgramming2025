@@ -21,3 +21,8 @@ void Enemy::on_update(float dt, Transform2D &transform, const DungeonRestrictor 
         transform.y = nextPos.y;
     }
 }
+
+std::tuple<float, float, float> Enemy::getCurrentColor() const
+{
+    return behaviour.getCurrentColor();
+}

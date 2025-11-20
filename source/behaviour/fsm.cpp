@@ -14,7 +14,7 @@ BehaviourFSM::BehaviourFSM(FOOD_SOURCES_TYPE foodSourceType)
 void BehaviourFSM::switchToState(BehaviourState newState)
 {
     stateChanged = (currentState != newState);
-    newState = newState;
+    currentState = newState;
 }
 
 void BehaviourFSM::update(BehaviourUpdateData data)
@@ -50,7 +50,7 @@ void BehaviourFSM::changeState(BehaviourUpdateData data)
             }
         }
         // IDLE -> MATE
-        if (data.health.current > 80)
+        if (data.health.current > 90)
         {
             switchToState(BehaviourState::MATE);
             return;
@@ -73,7 +73,7 @@ void BehaviourFSM::changeState(BehaviourUpdateData data)
             switchToState(BehaviourState::IDLE);
         break;
     case BehaviourState::MATE:
-        if (data.health.current < 30)
+        if (data.health.current < 80)
         {
             switchToState(BehaviourState::IDLE);
             return;

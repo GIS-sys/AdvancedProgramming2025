@@ -29,6 +29,7 @@ public:
     // Override these
     BehaviourBase(FOOD_SOURCES_TYPE foodSourceType) : foodSourceType(foodSourceType) {}
     void update(BehaviourUpdateData data) { currentTarget = data.currentPos; }
+    std::tuple<float, float, float> getCurrentColor() const { return {0.0f, 1.0f, 0.0f}; }
     // Override these
 
 protected:

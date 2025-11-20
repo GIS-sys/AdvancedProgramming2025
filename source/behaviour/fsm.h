@@ -12,6 +12,25 @@ public:
     BehaviourFSM(FOOD_SOURCES_TYPE foodSourceType);
     void update(BehaviourUpdateData data);
 
+    std::tuple<float, float, float> getCurrentColor() const
+    {
+        switch (currentState)
+        {
+        case BehaviourState::IDLE:
+            return {0.3f, 0.3f, 0.3f};
+        case BehaviourState::AVOID_PREDATORS:
+            return {0.9f, 0.9f, 0.9f};
+        case BehaviourState::FEED_HEALTH:
+            return {0.3f, 0.8f, 0.3f};
+        case BehaviourState::FEED_STAMINA:
+            return {0.3f, 0.3f, 0.8f};
+        case BehaviourState::MATE:
+            return {0.8f, 0.3f, 0.8f};
+        default:
+            return {0.0f, 0.0f, 0.0f};
+        }
+    }
+
 private:
     enum class BehaviourState
     {
@@ -22,7 +41,7 @@ private:
         MATE
     };
 
-    std::string BehaviourStateToString(const BehaviourState &state)
+    static std::string BehaviourStateToString(const BehaviourState &state)
     {
         switch (state)
         {

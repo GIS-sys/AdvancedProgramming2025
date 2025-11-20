@@ -23,14 +23,32 @@ void render_world(SDL_Window *window, SDL_Renderer *renderer, World &world)
         DrawSprite(renderer, *sprite, dst);
     };
 
-    // TilesArchetype currentTiles;
-    // FoodsArchetype currentFoods;
-    // EnemiesArchetype currentEnemies;
-    // HeroesArchetype currentHeroes;
-
     // Draw sprites
     for (int i = 0; i < world.currentTiles.size(); ++i)
         render_sprite(&world.currentTiles.sprites[i], &world.currentTiles.transform2ds[i]);
+
+    // Render what enemies are doing
+    for (int i = 0; i < world.currentEnemies.size(); ++i)
+    {
+        const double gap = 0.2f;
+        Transform2D barTransform = world.currentEnemies.transform2ds[i];
+        barTransform.x -= barTransform.sizeX * gap;
+        barTransform.y -= barTransform.sizeY * gap;
+        barTransform.sizeX *= (1.0f + 2 * gap);
+        barTransform.sizeY *= (1.0f + 2 * gap);
+        SDL_FRect dst = to_camera_space(barTransform, camera_transform, camera2d);
+        dst.x += screenW / 2;
+        dst.y += screenH / 2;
+        std::vector<SDL_FRect> enemyRect;
+        enemyRect.push_back(dst);
+
+        auto [red, green, blue] = world.currentEnemies.enemies[i].getCurrentColor();
+
+        SDL_SetRenderDrawColorFloat(renderer, red, green, blue, 1.0f);
+        SDL_RenderFillRects(renderer, enemyRect.data(), 1);
+    }
+
+    // Draw sprites
     for (int i = 0; i < world.currentFoods.size(); ++i)
         render_sprite(&world.currentFoods.sprites[i], &world.currentFoods.transform2ds[i]);
     for (int i = 0; i < world.currentEnemies.size(); ++i)
