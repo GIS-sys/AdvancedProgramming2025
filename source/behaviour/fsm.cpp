@@ -103,7 +103,7 @@ void BehaviourFSM::executeState(BehaviourUpdateData data)
     switch (currentState)
     {
     case BehaviourState::AVOID_PREDATORS:
-        currentTarget = findOppositeToClosestPredator(data.world, data.currentPos, data.pathfinder);
+        currentTarget = findOppositeToClosestPredator(data.world, data.currentPos, data.pathfinder, data.restrictor);
         break;
     case BehaviourState::FEED_HEALTH:
         if (std::holds_alternative<FoodConsumer>(foodSourceType))

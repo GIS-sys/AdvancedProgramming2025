@@ -13,15 +13,31 @@ bool hasPredatorNearby2(World *world, const int2 &position, int distance)
 bool BehaviourBase::hasPredatorNearby(World *world, const int2 &position, int distance)
 {
     bool x = hasPredatorNearby2(world, position, distance);
-    std::cout << "hasPredatorNearby " << x << std::endl;
     return x;
 }
 
-int2 BehaviourBase::findOppositeToClosestPredator(World *world, const int2 &position, const Pathfinder &pathfinder)
+int2 BehaviourBase::findOppositeToClosestPredator(World *world, const int2 &position, const Pathfinder &pathfinder, const DungeonRestrictor &restrictor)
 {
     int2 enemyPosition = findClosestPredator(world, position, pathfinder);
-    int2 deltaToEnemy = enemyPosition - position;
-    return position - deltaToEnemy.toDirection();
+    int maxLength = 0;
+    int2 maxTargetPosition = position;
+    for (int dx = -3; dx <= 3; ++dx)
+    {
+        for (int dy = -3; dy <= 3; ++dy)
+        {
+            int2 newTargetPosition = position + int2(dx, dy);
+            if (!restrictor.can_pass(newTargetPosition))
+                continue;
+            int lengthToEnemy = (enemyPosition - newTargetPosition).manhattanLength();
+            if (lengthToEnemy > maxLength)
+            {
+                maxLength = lengthToEnemy;
+                maxTargetPosition = newTargetPosition;
+            }
+        }
+    }
+
+    return maxTargetPosition;
 }
 
 int2 BehaviourBase::findClosestFood(World *world, const int2 &position, const Pathfinder &pathfinder)

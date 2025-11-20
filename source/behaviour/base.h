@@ -34,7 +34,7 @@ public:
 
 protected:
     static bool hasPredatorNearby(World *world, const int2 &position, int distance = 100);
-    static int2 findOppositeToClosestPredator(World *world, const int2 &position, const Pathfinder &pathfinder);
+    static int2 findOppositeToClosestPredator(World *world, const int2 &position, const Pathfinder &pathfinder, const DungeonRestrictor &restrictor);
     int2 findClosestFood(World *world, const int2 &position, const Pathfinder &pathfinder);
     int2 findClosestFoodHealth(World *world, const int2 &position, const Pathfinder &pathfinder);
     int2 findClosestFoodStamina(World *world, const int2 &position, const Pathfinder &pathfinder);
