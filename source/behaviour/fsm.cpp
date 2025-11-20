@@ -1,4 +1,4 @@
-#include "fsm.h"
+#include "behaviour/fsm.h"
 #include "world.h"
 #include "food_consumer.h"
 #include "predator.h"
@@ -6,133 +6,116 @@
 #include <limits>
 #include <iostream>
 
-FSM::FSM(FOOD_SOURCES_TYPE foodSourceType)
-    : foodSourceType(foodSourceType), currentState(BehaviourState::IDLE)
+BehaviourFSM::BehaviourFSM(FOOD_SOURCES_TYPE foodSourceType)
+    : BehaviourBase(foodSourceType), currentState(BehaviourState::IDLE)
 {
 }
 
-void FSM::update(World *world, const int2 &currentPos, Stamina &stamina, Health &health)
+void BehaviourFSM::switchToState(BehaviourState newState)
 {
-    if (std::holds_alternative<FoodConsumer>(foodSourceType))
+    stateChanged = (currentState != newState);
+    newState = newState;
+}
+
+void BehaviourFSM::update(BehaviourUpdateData data)
+{
+    changeState(data);
+    executeState(data);
+}
+
+void BehaviourFSM::changeState(BehaviourUpdateData data)
+{
+    // ANY -> AVOID_PREDATORS
+    if (std::holds_alternative<FoodConsumer>(foodSourceType) && hasPredatorNearby(data.world, data.currentPos))
     {
-        updateFoodConsumer(world, currentPos, stamina, health);
+        switchToState(BehaviourState::AVOID_PREDATORS);
+        return;
     }
-    else
+
+    switch (currentState)
     {
-        updatePredator(world, currentPos, stamina, health);
+    case BehaviourState::IDLE:
+        // IDLE -> FEED
+        if (data.stamina.current < 30 || data.health.current < 30)
+        {
+            if (data.stamina.current > data.health.current)
+            {
+                switchToState(BehaviourState::FEED_HEALTH);
+                return;
+            }
+            else
+            {
+                switchToState(BehaviourState::FEED_STAMINA);
+                return;
+            }
+        }
+        // IDLE -> MATE
+        if (data.health.current > 80)
+        {
+            switchToState(BehaviourState::MATE);
+            return;
+        }
+        break;
+    case BehaviourState::AVOID_PREDATORS:
+        // AVOID_PREDATORS -> IDLE
+        if (!hasPredatorNearby(data.world, data.currentPos))
+        {
+            switchToState(BehaviourState::IDLE);
+            return;
+        }
+        break;
+    case BehaviourState::FEED_HEALTH:
+        if (data.health.current > 50)
+            switchToState(BehaviourState::IDLE);
+        break;
+    case BehaviourState::FEED_STAMINA:
+        if (data.health.current > 50)
+            switchToState(BehaviourState::IDLE);
+        break;
+    case BehaviourState::MATE:
+        if (data.health.current < 30)
+        {
+            switchToState(BehaviourState::IDLE);
+            return;
+        }
+        break;
+    default:
+        break;
     }
 }
 
-int2 FSM::getTarget(World *world, const int2 &currentPos, const DungeonRestrictor &restrictor, const Pathfinder &pathfinder) const
+void BehaviourFSM::executeState(BehaviourUpdateData data)
 {
-    switch (getCurrentState())
+    if (!stateChanged && data.currentPos != currentTarget)
+        return;
+
+    switch (currentState)
     {
     case BehaviourState::AVOID_PREDATORS:
-        return findOppositeToClosestPredator(world, currentPos, pathfinder);
-    case BehaviourState::FIND_FOOD:
-        return findClosestFood(world, currentPos, pathfinder);
+        currentTarget = findOppositeToClosestPredator(data.world, data.currentPos, data.pathfinder);
+        break;
+    case BehaviourState::FEED_HEALTH:
+        if (std::holds_alternative<FoodConsumer>(foodSourceType))
+            currentTarget = findClosestFoodHealth(data.world, data.currentPos, data.pathfinder);
+        else
+            currentTarget = findClosestFoodConsumer(data.world, data.currentPos, data.pathfinder);
+        break;
+    case BehaviourState::FEED_STAMINA:
+        if (std::holds_alternative<FoodConsumer>(foodSourceType))
+            currentTarget = findClosestFoodStamina(data.world, data.currentPos, data.pathfinder);
+        else
+            currentTarget = findClosestFoodConsumer(data.world, data.currentPos, data.pathfinder);
+        break;
     case BehaviourState::IDLE:
-        return restrictor.dungeon->getRandomFloorPosition();
+        currentTarget = data.restrictor.dungeon->getRandomFloorPosition();
+        break;
     case BehaviourState::MATE:
-        return findClosestMate(world, currentPos, pathfinder, foodSourceType);
-    case BehaviourState::HUNT:
-        return findClosestFoodConsumer(world, currentPos, pathfinder);
+        if (std::holds_alternative<FoodConsumer>(foodSourceType))
+            currentTarget = findClosestFoodConsumer(data.world, data.currentPos, data.pathfinder);
+        else
+            currentTarget = findClosestPredator(data.world, data.currentPos, data.pathfinder);
+        break;
+    default:
+        break;
     }
-    return currentPos;
-}
-
-void FSM::updateFoodConsumer(World *world, const int2 &currentPos, Stamina &stamina, Health &health)
-{
-    if (hasPredatorNearby(world, currentPos))
-    {
-        currentState = BehaviourState::AVOID_PREDATORS;
-    }
-    else if (stamina.current < 30 || health.current < 30)
-    {
-        currentState = BehaviourState::FIND_FOOD;
-    }
-    else if (health.current > 80)
-    {
-        currentState = BehaviourState::MATE;
-    }
-    else
-    {
-        currentState = BehaviourState::IDLE;
-    }
-}
-
-void FSM::updatePredator(World *world, const int2 &currentPos, Stamina &stamina, Health &health)
-{
-    if (health.current > 80)
-    {
-        currentState = BehaviourState::MATE;
-    }
-    else
-    {
-        currentState = BehaviourState::HUNT;
-    }
-}
-
-bool FSM::hasPredatorNearby(World *world, const int2 &position, int distance)
-{
-    for (int i : world->getIndicesEnemiesHunters())
-        if ((world->currentEnemies.transform2ds[i].point() - position).manhattanLength() < distance)
-            return true;
-    return false;
-}
-
-int2 FSM::findOppositeToClosestPredator(World *world, const int2 &position, const Pathfinder &pathfinder)
-{
-    int2 enemyPosition = findClosestPredator(world, position, pathfinder);
-    int2 deltaToEnemy = enemyPosition - position;
-    return position - deltaToEnemy.toDirection();
-}
-
-int2 FSM::findClosestFood(World *world, const int2 &position, const Pathfinder &pathfinder)
-{
-    int minIndex = 0;
-    for (int i = 0; i < world->currentFoods.size(); ++i)
-        if ((world->currentFoods.transform2ds[i].point() - position).manhattanLength() < (world->currentFoods.transform2ds[minIndex].point() - position).manhattanLength())
-            minIndex = i;
-    return world->currentFoods.transform2ds[minIndex].point();
-}
-
-int2 FSM::findClosestMate(World *world, const int2 &position, const Pathfinder &pathfinder, FOOD_SOURCES_TYPE foodSourceType)
-{
-    if (std::holds_alternative<FoodConsumer>(foodSourceType))
-    {
-        return findClosestFoodConsumer(world, position, pathfinder);
-    }
-    else
-    {
-        return findClosestPredator(world, position, pathfinder);
-    }
-}
-
-int2 FSM::findClosestPredator(World *world, const int2 &position, const Pathfinder &pathfinder)
-{
-    // TODO
-    int minIndex = 0;
-    for (int i : world->getIndicesEnemiesHunters())
-    {
-        if (world->currentEnemies.transform2ds[i].point() == position)
-            continue;
-        if ((world->currentEnemies.transform2ds[i].point() - position).manhattanLength() < (world->currentEnemies.transform2ds[minIndex].point() - position).manhattanLength())
-            minIndex = i;
-    }
-    return world->currentEnemies.transform2ds[minIndex].point();
-}
-
-int2 FSM::findClosestFoodConsumer(World *world, const int2 &position, const Pathfinder &pathfinder)
-{
-    // TODO
-    int minIndex = 0;
-    for (int i : world->getIndicesEnemiesGatherers())
-    {
-        if (world->currentEnemies.transform2ds[i].point() == position)
-            continue;
-        if ((world->currentEnemies.transform2ds[i].point() - position).manhattanLength() < (world->currentEnemies.transform2ds[minIndex].point() - position).manhattanLength())
-            minIndex = i;
-    }
-    return world->currentEnemies.transform2ds[minIndex].point();
 }

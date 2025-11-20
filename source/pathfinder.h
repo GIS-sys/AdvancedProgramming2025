@@ -1,6 +1,7 @@
 #pragma once
 
 #include "transform2d.h"
+#include "dungeon_restrictor.h"
 #include <queue>
 #include <unordered_map>
 #include <functional>

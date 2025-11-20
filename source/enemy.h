@@ -22,5 +22,5 @@ private:
 public:
     Enemy(FOOD_SOURCES_TYPE food_source) : behaviour(food_source) {}
 
-    void on_update(float dt, Transform2D &transform, const DungeonRestrictor &restrictor, World *world, Stamina &stamina, Health &health);
+    void on_update(float dt, Transform2D &transform, const DungeonRestrictor &restrictor, World *world, Health &health, Stamina &stamina);
 };

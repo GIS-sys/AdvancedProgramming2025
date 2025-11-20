@@ -1,7 +1,7 @@
 #include "predator.h"
 #include "world.h"
 
-void Predator::on_update(float dt, World *world, Transform2D &myTransform, Health &myHealth, TYPE_ID myID)
+void Predator::on_update(float dt, World *world, Transform2D &myTransform, Health &myHealth, Stamina &myStamina, TYPE_ID myID)
 {
     for (int i = 0; i < world->currentHeroes.size(); ++i)
     {
@@ -15,6 +15,7 @@ void Predator::on_update(float dt, World *world, Transform2D &myTransform, Healt
         {
             Health &victimHp = world->currentHeroes.healths[i];
             myHealth.change(victimHp.current);                         // heal predator
+            myStamina.change(victimHp.current);                        // restore predator
             world->toDeleteHeroes.insert(world->currentHeroes.ids[i]); // kill victim
             return;                                                    // Consume only one victim at a time
         }
@@ -31,6 +32,7 @@ void Predator::on_update(float dt, World *world, Transform2D &myTransform, Healt
         {
             Health &victimHp = world->currentEnemies.healths[i];
             myHealth.change(victimHp.current);                           // heal predator
+            myStamina.change(victimHp.current);                          // restore predator
             world->toDeleteEnemies.insert(world->currentEnemies.ids[i]); // kill victim
             return;                                                      // Consume only one victim at a time
         }
