@@ -6,11 +6,12 @@
 class BehaviourTreeNodeCondition : public BehaviourTreeNodeBase
 {
 public:
-    BehaviourTreeNodeBase *childLeft = nullptr;
-    BehaviourTreeNodeBase *childRight = nullptr;
+    BehaviourTreeNodeBase *childLeft;
+    BehaviourTreeNodeBase *childRight;
     std::function<bool(BehaviourUpdateData)> conditionIsRight;
 
-    BehaviourTreeNodeCondition(std::function<bool(BehaviourUpdateData)> conditionIsRight) : conditionIsRight(conditionIsRight) {}
+    BehaviourTreeNodeCondition(std::function<bool(BehaviourUpdateData)> conditionIsRight, BehaviourTreeNodeBase *childLeft = nullptr, BehaviourTreeNodeBase *childRight = nullptr)
+        : conditionIsRight(conditionIsRight), childLeft(childLeft), childRight(childRight) {}
     ~BehaviourTreeNodeCondition()
     {
         if (childLeft)
@@ -49,6 +50,7 @@ public:
 private:
     void buildWithChildren() override
     {
+        std::cout << "condit" << std::endl;
         if (childLeft)
             childLeft->build(this);
         if (childRight)
