@@ -2,8 +2,6 @@
 
 void World::update(float dt)
 {
-    dt /= 10;
-
     filterDelete(currentCameras, toDeleteCameras);
     filterDelete(currentTiles, toDeleteTiles);
     filterDelete(currentHeroes, toDeleteHeroes);
