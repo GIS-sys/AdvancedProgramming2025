@@ -41,5 +41,7 @@ protected:
     template <typename F>
     int2 findClosestFood(World *world, const int2 &position, const Pathfinder &pathfinder, F &&lambdaFilter);
     static int2 findClosestFoodConsumer(World *world, const int2 &position, const Pathfinder &pathfinder);
+    static int2 findClosestHero(World *world, const int2 &position, const Pathfinder &pathfinder);
+    static int2 findClosestFoodConsumerOrHero(World *world, const int2 &position, const Pathfinder &pathfinder);
     static int2 findClosestPredator(World *world, const int2 &position, const Pathfinder &pathfinder);
 };

@@ -91,3 +91,26 @@ int2 BehaviourBase::findClosestFoodConsumer(World *world, const int2 &position, 
     }
     return world->currentEnemies.transform2ds[minIndex].point();
 }
+
+int2 BehaviourBase::findClosestHero(World *world, const int2 &position, const Pathfinder &pathfinder)
+{
+    int minIndex = 0;
+    for (int i = 0; i < world->currentHeroes.size(); ++i)
+    {
+        if (world->currentHeroes.transform2ds[i].point() == position)
+            continue;
+        if ((world->currentHeroes.transform2ds[i].point() - position).manhattanLength() < (world->currentHeroes.transform2ds[minIndex].point() - position).manhattanLength())
+            minIndex = i;
+    }
+    return world->currentHeroes.transform2ds[minIndex].point();
+}
+
+int2 BehaviourBase::findClosestFoodConsumerOrHero(World *world, const int2 &position, const Pathfinder &pathfinder)
+{
+    int2 closestFoodConsumer = findClosestFoodConsumer(world, position, pathfinder);
+    int2 closestHero = findClosestHero(world, position, pathfinder);
+    if ((closestFoodConsumer - position).manhattanLength() < (closestHero - position).manhattanLength())
+        return closestFoodConsumer;
+    else
+        return closestHero;
+}

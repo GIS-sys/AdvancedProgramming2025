@@ -109,13 +109,13 @@ void BehaviourFSM::executeState(BehaviourUpdateData data)
         if (std::holds_alternative<FoodConsumer>(foodSourceType))
             currentTarget = findClosestFoodHealth(data.world, data.currentPos, data.pathfinder);
         else
-            currentTarget = findClosestFoodConsumer(data.world, data.currentPos, data.pathfinder);
+            currentTarget = findClosestFoodConsumerOrHero(data.world, data.currentPos, data.pathfinder);
         break;
     case BehaviourState::FEED_STAMINA:
         if (std::holds_alternative<FoodConsumer>(foodSourceType))
             currentTarget = findClosestFoodStamina(data.world, data.currentPos, data.pathfinder);
         else
-            currentTarget = findClosestFoodConsumer(data.world, data.currentPos, data.pathfinder);
+            currentTarget = findClosestFoodConsumerOrHero(data.world, data.currentPos, data.pathfinder);
         break;
     case BehaviourState::IDLE:
         currentTarget = data.restrictor.dungeon->getRandomFloorPosition();
