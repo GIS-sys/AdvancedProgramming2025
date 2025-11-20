@@ -27,6 +27,8 @@ void Predator::on_update(float dt, World *world, Transform2D &myTransform, Healt
             continue;
         if (world->toDeleteEnemies.contains(world->currentEnemies.ids[i]))
             continue;
+        if (std::holds_alternative<Predator>(world->currentEnemies.foodsources[i]))
+            continue;
         Transform2D &victimTransform = world->currentEnemies.transform2ds[i];
         if (int(myTransform.x) == int(victimTransform.x) &&
             int(myTransform.y) == int(victimTransform.y))
